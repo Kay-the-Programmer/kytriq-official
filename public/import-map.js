@@ -1,0 +1,21 @@
+// This script dynamically creates and appends an import map to the document
+const importMap = {
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react": "https://esm.sh/react@^19.1.0",
+    "@google/genai": "https://esm.sh/@google/genai",
+    "express": "https://esm.sh/express@^5.1.0",
+    "cors": "https://esm.sh/cors@^2.8.5",
+    "dotenv": "https://esm.sh/dotenv@^17.2.0",
+    "jsonwebtoken": "https://esm.sh/jsonwebtoken@^9.0.2"
+  }
+};
+
+// Create the script element with type="importmap"
+const script = document.createElement('script');
+script.type = 'importmap';
+script.textContent = JSON.stringify(importMap, null, 2);
+
+// Append it to the document head
+document.head.appendChild(script);
