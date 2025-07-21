@@ -88,6 +88,10 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
     const clearError = () => setError(null);
 
   useEffect(() => {
+    // Create an AbortController for this effect instance
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+
     const fetchAllData = async () => {
         setLoading(true);
         try {
@@ -97,36 +101,52 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
 
             // Public data
             const [productsData, softwareData, blogData, careersData] = await Promise.all([
-                            ProductService.getAll(),
-                            SoftwareService.getAll(),
-                            BlogService.getAll(),
-                            CareerService.getAll(),
-                        ]);
+                ProductService.getAll({}, signal),
+                SoftwareService.getAll({}, signal),
+                BlogService.getAll({}, signal),
+                CareerService.getAll({}, signal),
+            ]);
+
+            // Check if the request was aborted before updating state
+            if (signal.aborted) return;
+
             setProducts(productsData);
             setSoftwareProducts(softwareData);
             setBlogPosts(blogData);
             setJobOpenings(careersData);
 
             if (token) {
-                const userData = await AuthService.getCurrentUser();
+                const userData = await AuthService.getCurrentUser(signal);
+
+                // Check if the request was aborted before updating state
+                if (signal.aborted) return;
+
                 setCurrentUser(userData);
-                 // Fetch admin/protected data if user is admin
+
+                // Fetch admin/protected data if user is admin
                 if (userData?.role === 'admin') {
                     [ordersData, usersData] = await Promise.all([
-                        OrderService.getAll(),
-                        UserService.getAll(),
+                        OrderService.getAll({}, signal),
+                        UserService.getAll({}, signal),
                     ]);
                 } else { // Fetch only user's own orders if they are a customer
                     // Assuming an endpoint /api/orders/my-orders exists for logged-in users
                     // For now, we filter on the client, but a dedicated endpoint is better.
-                    const allOrders = await OrderService.getAll();
+                    const allOrders = await OrderService.getAll({}, signal);
                     ordersData = allOrders.filter((o: Order) => o.userId === userData.id);
                 }
             }
-             setOrders(ordersData);
-             setUsers(usersData);
+
+            // Check if the request was aborted before updating state
+            if (signal.aborted) return;
+
+            setOrders(ordersData);
+            setUsers(usersData);
 
         } catch (error) {
+            // Don't update state or show errors if the request was aborted
+            if (signal.aborted) return;
+
             console.error("Failed to fetch initial data", error);
             // If token is invalid, log out user
             if (error instanceof Error) {
@@ -138,18 +158,31 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
                 setError(new Error('Failed to fetch initial data'));
             }
         } finally {
-            setLoading(false);
+            // Don't update loading state if the request was aborted
+            if (!signal.aborted) {
+                setLoading(false);
+            }
         }
     };
-      fetchAllData().catch(error => {
-          console.error('Error fetching initial data:', error);
-          if (error instanceof Error) {
-              setError(error);
-          } else {
-              setError(new Error('Failed to fetch initial data'));
-          }
-          setLoading(false);
-      });
+
+    fetchAllData().catch(error => {
+        // Don't update state or show errors if the request was aborted
+        if (signal.aborted) return;
+
+        console.error('Error fetching initial data:', error);
+        if (error instanceof Error) {
+            setError(error);
+        } else {
+            setError(new Error('Failed to fetch initial data'));
+        }
+        setLoading(false);
+    });
+
+    // Cleanup function to abort any pending requests when the component unmounts
+    // or when the dependencies change
+    return () => {
+        abortController.abort();
+    };
   }, [currentUser?.id]); // Refetch when user logs in/out
 
   const getProductById = (id: string) => products.find((p: { id: string; }) => p.id === id);
@@ -161,11 +194,20 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   const saveProduct = async (product: Product) => {
     try {
-      const isNew = !getProductById(product.id);
+      // If product.id is undefined or empty, it's a new product
+      const isNew = !product.id || !getProductById(product.id);
       const savedProduct = isNew 
         ? await ProductService.create(product)
         : await ProductService.update(product.id, product);
-      setProducts((prev: any[]) => isNew ? [savedProduct, ...prev] : prev.map(p => p.id === savedProduct.id ? savedProduct : p));
+
+      // Check if savedProduct is null or undefined before accessing its properties
+      if (!savedProduct) {
+        console.error('Failed to save product: API returned null or undefined');
+        setError(new Error('Failed to save product: API returned null or undefined'));
+        return;
+      }
+
+      setProducts((prev: any[]) => isNew ? [savedProduct, ...prev] : prev.map(p => p && p.id === savedProduct.id ? savedProduct : p));
     } catch (error) {
       console.error('Failed to save product:', error);
       if (error instanceof Error) {
@@ -191,11 +233,20 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   const saveSoftwareProduct = async (software: SoftwareProduct) => {
     try {
-      const isNew = !getSoftwareById(software.id);
+      // If software.id is undefined or empty, it's a new software product
+      const isNew = !software.id || !getSoftwareById(software.id);
       const savedSoftware = isNew 
         ? await SoftwareService.create(software)
         : await SoftwareService.update(software.id, software);
-      setSoftwareProducts((prev: any[]) => isNew ? [savedSoftware, ...prev] : prev.map(p => p.id === savedSoftware.id ? savedSoftware : p));
+
+      // Check if savedSoftware is null or undefined before accessing its properties
+      if (!savedSoftware) {
+        console.error('Failed to save software product: API returned null or undefined');
+        setError(new Error('Failed to save software product: API returned null or undefined'));
+        return;
+      }
+
+      setSoftwareProducts((prev: any[]) => isNew ? [savedSoftware, ...prev] : prev.map(p => p && p.id === savedSoftware.id ? savedSoftware : p));
     } catch (error) {
       console.error('Failed to save software product:', error);
       if (error instanceof Error) {
@@ -222,11 +273,20 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   const saveBlogPost = async (post: BlogPost) => {
     try {
-      const isNew = !getBlogPostById(post.id);
+      // If post.id is undefined or empty, it's a new blog post
+      const isNew = !post.id || !getBlogPostById(post.id);
       const savedPost = isNew 
         ? await BlogService.create(post)
         : await BlogService.update(post.id, post);
-      setBlogPosts((prev: any[]) => isNew ? [savedPost, ...prev] : prev.map(p => p.id === savedPost.id ? savedPost : p));
+
+      // Check if savedPost is null or undefined before accessing its properties
+      if (!savedPost) {
+        console.error('Failed to save blog post: API returned null or undefined');
+        setError(new Error('Failed to save blog post: API returned null or undefined'));
+        return;
+      }
+
+      setBlogPosts((prev: any[]) => isNew ? [savedPost, ...prev] : prev.map(p => p && p.id === savedPost.id ? savedPost : p));
     } catch (error) {
       console.error('Failed to save blog post:', error);
       if (error instanceof Error) {
@@ -251,11 +311,20 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
   };
    const saveJobOpening = async (job: JobOpening) => {
     try {
-      const isNew = !getJobById(job.id);
+      // If job.id is undefined or empty, it's a new job opening
+      const isNew = !job.id || !getJobById(job.id);
       const savedJob = isNew 
         ? await CareerService.create(job)
         : await CareerService.update(job.id, job);
-      setJobOpenings((prev: any[]) => isNew ? [savedJob, ...prev] : prev.map(j => j.id === savedJob.id ? savedJob : j));
+
+      // Check if savedJob is null or undefined before accessing its properties
+      if (!savedJob) {
+        console.error('Failed to save job opening: API returned null or undefined');
+        setError(new Error('Failed to save job opening: API returned null or undefined'));
+        return;
+      }
+
+      setJobOpenings((prev: any[]) => isNew ? [savedJob, ...prev] : prev.map(j => j && j.id === savedJob.id ? savedJob : j));
     } catch (error) {
       console.error('Failed to save job opening:', error);
       if (error instanceof Error) {
@@ -280,11 +349,20 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
   };
    const saveUser = async (user: User) => {
     try {
+      // If user.id is undefined or empty, it's a new user
       const isNew = !user.id || !getUserById(user.id);
       const savedUser = isNew 
         ? await UserService.create(user)
         : await UserService.update(user.id, user);
-      setUsers((prev: any[]) => isNew ? [savedUser, ...prev] : prev.map(u => u.id === savedUser.id ? savedUser : u));
+
+      // Check if savedUser is null or undefined before accessing its properties
+      if (!savedUser) {
+        console.error('Failed to save user: API returned null or undefined');
+        setError(new Error('Failed to save user: API returned null or undefined'));
+        return;
+      }
+
+      setUsers((prev: any[]) => isNew ? [savedUser, ...prev] : prev.map(u => u && u.id === savedUser.id ? savedUser : u));
       if (currentUser?.id === savedUser.id) setCurrentUser(savedUser);
     } catch (error) {
       console.error('Failed to save user:', error);
@@ -311,7 +389,15 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
   const updateOrderStatus = async (orderId: string, newStatus: Order['status']) => {
     try {
       const updatedOrder = await OrderService.updateStatus(orderId, newStatus);
-      setOrders((prev: any[]) => prev.map(o => o.id === orderId ? updatedOrder : o));
+
+      // Check if updatedOrder is null or undefined before using it
+      if (!updatedOrder) {
+        console.error('Failed to update order status: API returned null or undefined');
+        setError(new Error('Failed to update order status: API returned null or undefined'));
+        return;
+      }
+
+      setOrders((prev: any[]) => prev.map(o => o && o.id === orderId ? updatedOrder : o));
     } catch (error) {
       console.error('Failed to update order status:', error);
       if (error instanceof Error) {
@@ -325,6 +411,14 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
   const placeOrder = async (items: (Product & {quantity: number})[], user: User): Promise<string | null> => {
     try {
         const newOrder = await OrderService.create({ userId: user.id, items });
+
+        // Check if newOrder is null or undefined before accessing its properties
+        if (!newOrder) {
+          console.error('Failed to place order: API returned null or undefined');
+          setError(new Error('Failed to place order: API returned null or undefined'));
+          return null;
+        }
+
         setOrders((prev: any) => [newOrder, ...prev]);
         return newOrder.id;
     } catch(error) {
@@ -341,7 +435,16 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   const login = async (email: string, password: string): Promise<{ success: boolean; error?: { message: string; field?: string } }> => {
     try {
-        const { user } = await AuthService.login(email, password);
+        const response = await AuthService.login(email, password);
+
+        // Check if response is null or undefined before accessing its properties
+        if (!response) {
+          console.error('Failed to login: API returned null or undefined');
+          setError(new Error('Failed to login: API returned null or undefined'));
+          return { success: false, error: { message: 'Login failed: API returned null or undefined' } };
+        }
+
+        const { user } = response;
         setCurrentUser(user);
         return { success: true };
     } catch (error) {
@@ -381,7 +484,16 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   const signup = async (fullName: string, email: string, password: string): Promise<{ success: boolean; user?: User; error?: { message: string; field?: string } }> => {
     try {
-        const { user } = await AuthService.signup(fullName, email, password);
+        const response = await AuthService.signup(fullName, email, password);
+
+        // Check if response is null or undefined before accessing its properties
+        if (!response) {
+          console.error('Failed to signup: API returned null or undefined');
+          setError(new Error('Failed to signup: API returned null or undefined'));
+          return { success: false, error: { message: 'Signup failed: API returned null or undefined' } };
+        }
+
+        const { user } = response;
         setCurrentUser(user);
         setUsers((prev: any) => [user, ...prev]);
         return { success: true, user };

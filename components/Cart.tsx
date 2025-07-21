@@ -12,7 +12,7 @@ interface CartProps {
 const Cart: React.FC<CartProps> = ({ isOpen, onClose, onNavigate }) => {
   const { cartItems, removeFromCart, updateQuantity } = useCart();
 
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
   const handleCheckout = () => {
     onNavigate('checkout');
@@ -51,26 +51,26 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, onNavigate }) => {
                   {cartItems.length > 0 ? (
                     <ul role="list" className="-my-6 divide-y divide-brand-gray-200">
                       {cartItems.map((item) => (
-                        <li key={item.id} className="flex py-6">
+                        <li key={item.product.id} className="flex py-6">
                           <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-brand-gray-200">
-                            <img src={item.imageUrl} alt={item.name} className="h-full w-full object-cover object-center" />
+                            <img src={item.product.imageUrl} alt={item.product.name} className="h-full w-full object-cover object-center" />
                           </div>
                           <div className="ml-4 flex flex-1 flex-col">
                             <div>
                               <div className="flex justify-between text-base font-medium text-brand-gray-900">
-                                <h3>{item.name}</h3>
-                                <p className="ml-4">${(item.price * item.quantity).toFixed(2)}</p>
+                                <h3>{item.product.name}</h3>
+                                <p className="ml-4">${(item.product.price * item.quantity).toFixed(2)}</p>
                               </div>
-                              <p className="mt-1 text-sm text-brand-gray-500">{item.category}</p>
+                              <p className="mt-1 text-sm text-brand-gray-500">{item.product.category}</p>
                             </div>
                             <div className="flex flex-1 items-end justify-between text-sm">
                               <div className="flex items-center border border-brand-gray-300 rounded-md">
-                                <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="px-2 py-1 text-brand-gray-500 hover:text-brand-gray-700">-</button>
+                                <button onClick={() => updateQuantity(item.product.id, item.quantity - 1)} className="px-2 py-1 text-brand-gray-500 hover:text-brand-gray-700">-</button>
                                 <p className="px-2">{item.quantity}</p>
-                                <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="px-2 py-1 text-brand-gray-500 hover:text-brand-gray-700">+</button>
+                                <button onClick={() => updateQuantity(item.product.id, item.quantity + 1)} className="px-2 py-1 text-brand-gray-500 hover:text-brand-gray-700">+</button>
                               </div>
                               <div className="flex">
-                                <button type="button" className="font-medium text-techflex-orange hover:text-techflex-orange-600 flex items-center gap-1" onClick={() => removeFromCart(item.id)}>
+                                <button type="button" className="font-medium text-techflex-orange hover:text-techflex-orange-600 flex items-center gap-1" onClick={() => removeFromCart(item.product.id)}>
                                   <Icon name="trash" className="h-4 w-4" />
                                   Remove
                                 </button>
@@ -99,7 +99,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, onNavigate }) => {
                     </div>
                     <p className="mt-0.5 text-sm text-brand-gray-500">Shipping and taxes calculated at checkout.</p>
                     <div className="mt-6">
-                        <button onClick={handleCheckout} className="w-full flex items-center justify-center rounded-md border border-transparent bg-techflex-orange px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-techflex-orange-600">
+                        <button onClick={handleCheckout} className="w-full flex items-center justify-center rounded-full border border-transparent bg-techflex-orange px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-techflex-orange-600">
                           Checkout
                         </button>
                     </div>

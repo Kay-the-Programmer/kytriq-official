@@ -14,13 +14,13 @@ const SoftwareProductSchema = new Schema<SoftwareProductDocument>(
     category: { 
       type: String, 
       required: true,
-      enum: ['Business', 'Creative', 'Productivity', 'Developer']
+      enum: ['Business', 'Creative', 'Productivity', 'Developer', 'Finance']
     },
     price: { type: Number, required: true },
     pricingModel: { 
       type: String, 
       required: true,
-      enum: ['Subscription', 'One-Time']
+      enum: ['Subscription', 'One-Time', 'Freemiun', 'Pay-As-You-Go', 'Monthly', 'Yearly' ],
     },
     imageUrl: { type: String, required: true },
     description: { type: String, required: true },

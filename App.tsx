@@ -14,6 +14,7 @@ import Cart from './components/Cart';
 import CheckoutPage from './pages/CheckoutPage';
 import OrderConfirmationPage from './pages/OrderConfirmationPage';
 import { useCart } from './contexts/CartContext';
+import Snackbar from './components/Snackbar';
 import AccountPage from './pages/AccountPage';
 import SoftwareGetStartedPage from './pages/SoftwareGetStartedPage';
 import SoftwareSetupConfirmationPage from './pages/SoftwareSetupConfirmationPage';
@@ -155,10 +156,11 @@ const OrderDetailWrapper: React.FC = () => {
 
 // Protected route component
 const ProtectedRoute: React.FC<{
-    element: React.ReactNode;
+    element: React.ReactNode | ((navigate: any) => React.ReactNode);
     adminOnly?: boolean;
 }> = ({ element, adminOnly = false }) => {
     const { currentUser } = useContent();
+    const navigate = useNavigate();
 
     if (!currentUser) {
         return <Navigate to="/login" />;
@@ -168,7 +170,7 @@ const ProtectedRoute: React.FC<{
         return <Navigate to="/" />;
     }
 
-    return <>{element}</>;
+    return <>{typeof element === 'function' ? element(navigate) : element}</>;
 };
 
 
@@ -467,6 +469,7 @@ const SignUpPageWrapper: React.FC = () => {
 const App: React.FC = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { loading, currentUser } = useContent();
+  const { notification, closeNotification } = useCart();
 
   if (loading) {
     return (
@@ -480,7 +483,7 @@ const App: React.FC = () => {
   }
 
   // Create a wrapper for the Header and Footer that can use the useNavigate hook
-  const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const AppLayout: React.FC<{ children: React.ReactNode | ((navigate: any) => React.ReactNode) }> = ({ children }) => {
     const navigate = useNavigate();
 
     // Helper function for a Cart component until it's updated to use React Router
@@ -497,7 +500,7 @@ const App: React.FC = () => {
         <Header onCartToggle={() => setIsCartOpen(!isCartOpen)} />
         <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} onNavigate={handleNavigate} />
         <main>
-            {children}
+            {typeof children === 'function' ? children(navigate) : children}
         </main>
         <Footer />
       </div>
@@ -506,19 +509,35 @@ const App: React.FC = () => {
 
   return (
     <Router>
+      <Snackbar 
+        message={notification.message}
+        isOpen={notification.isOpen}
+        onClose={closeNotification}
+        type={notification.type}
+        onViewCart={() => setIsCartOpen(true)}
+      />
       <Routes>
         <Route path="/" element={<AppLayout><HomePage /></AppLayout>} />
 
         {/* Product routes */}
-        <Route path="/products" element={<AppLayout><ProductsPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} /></AppLayout>} />
+        <Route path="/products" element={<AppLayout>{(navigate) => <ProductsPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
         <Route path="/product/:id" element={<AppLayout><ProductDetailWrapper /></AppLayout>} />
         <Route path="/productDetail/:id" element={<AppLayout><ProductDetailWrapper /></AppLayout>} />
 
         {/* Software routes */}
-        <Route path="/software" element={<AppLayout><SoftwarePage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} /></AppLayout>} />
+        <Route path="/software" element={<AppLayout>{(navigate) => <SoftwarePage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
         <Route path="/software/:id" element={<AppLayout><SoftwareDetailWrapper /></AppLayout>} />
+        <Route path="/softwareDetail/:id" element={<AppLayout><SoftwareDetailWrapper /></AppLayout>} />
         <Route 
           path="/software-get-started/:id" 
+          element={
+            <AppLayout>
+              <ProtectedRoute element={<SoftwareGetStartedWrapper />} />
+            </AppLayout>
+          } 
+        />
+        <Route 
+          path="/softwareGetStarted/:id" 
           element={
             <AppLayout>
               <ProtectedRoute element={<SoftwareGetStartedWrapper />} />
@@ -535,7 +554,7 @@ const App: React.FC = () => {
         />
 
         {/* Blog routes */}
-        <Route path="/blog" element={<AppLayout><BlogPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} /></AppLayout>} />
+        <Route path="/blog" element={<AppLayout>{(navigate) => <BlogPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
         <Route path="/blog/:id" element={<AppLayout><BlogDetailWrapper /></AppLayout>} />
 
         {/* E-commerce routes */}
@@ -559,12 +578,12 @@ const App: React.FC = () => {
           path="/account" 
           element={
             <AppLayout>
-              <ProtectedRoute element={<AccountPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />} />
+              <ProtectedRoute element={(navigate) => <AccountPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />} />
             </AppLayout>
           } 
         />
         <Route 
-          path="/order/:id" 
+          path="/orderDetail/:id" 
           element={
             <AppLayout>
               <ProtectedRoute element={<OrderDetailWrapper />} />
@@ -573,18 +592,18 @@ const App: React.FC = () => {
         />
 
         {/* Service pages */}
-        <Route path="/electronics" element={<AppLayout><ElectronicsPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} /></AppLayout>} />
-        <Route path="/pos-systems" element={<AppLayout><PosSystemsPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} /></AppLayout>} />
-        <Route path="/ecommerce" element={<AppLayout><ECommercePage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} /></AppLayout>} />
-        <Route path="/software-development" element={<AppLayout><SoftwareDevelopmentPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} /></AppLayout>} />
+        <Route path="/electronics" element={<AppLayout>{(navigate) => <ElectronicsPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
+        <Route path="/pos-systems" element={<AppLayout>{(navigate) => <PosSystemsPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
+        <Route path="/ecommerce" element={<AppLayout>{(navigate) => <ECommercePage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
+        <Route path="/software-development" element={<AppLayout>{(navigate) => <SoftwareDevelopmentPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
 
         {/* Company pages */}
-        <Route path="/about" element={<AppLayout><AboutPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} /></AppLayout>} />
-        <Route path="/careers" element={<AppLayout><CareersPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} /></AppLayout>} />
+        <Route path="/about" element={<AppLayout>{(navigate) => <AboutPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
+        <Route path="/careers" element={<AppLayout>{(navigate) => <CareersPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
         <Route path="/career-application/:id" element={<AppLayout><CareerApplicationWrapper /></AppLayout>} />
         <Route path="/career-application-confirmation/:id" element={<AppLayout><CareerApplicationConfirmationWrapper /></AppLayout>} />
         <Route path="/contact" element={<AppLayout><ContactWrapper /></AppLayout>} />
-        <Route path="/contact-confirmation" element={<AppLayout><ContactConfirmationPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} /></AppLayout>} />
+        <Route path="/contact-confirmation" element={<AppLayout>{(navigate) => <ContactConfirmationPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
 
         {/* Policy pages */}
         <Route path="/privacy" element={<AppLayout><PrivacyPolicyPage /></AppLayout>} />
@@ -593,10 +612,10 @@ const App: React.FC = () => {
 
         {/* Admin routes */}
         <Route 
-          path="/admin" 
+          path="/admin/*" 
           element={
             <AppLayout>
-              <ProtectedRoute element={<AdminPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />} adminOnly={true} />
+              <ProtectedRoute element={(navigate) => <AdminPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />} adminOnly={true} />
             </AppLayout>
           } 
         />
@@ -610,6 +629,14 @@ const App: React.FC = () => {
         />
         <Route 
           path="/admin-software-form/:id?" 
+          element={
+            <AppLayout>
+              <ProtectedRoute element={<AdminSoftwareFormWrapper />} adminOnly={true} />
+            </AppLayout>
+          } 
+        />
+        <Route 
+          path="/adminSoftwareForm/:id?" 
           element={
             <AppLayout>
               <ProtectedRoute element={<AdminSoftwareFormWrapper />} adminOnly={true} />

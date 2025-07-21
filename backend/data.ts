@@ -87,25 +87,134 @@ export interface Order {
 
 // Data Store
 let products: Product[] = [
-    {
-    id: 'prod_001', name: 'Cotton Jersey Top', category: 'Apparel', price: 24.99, originalPrice: 35.00,
+  {
+    id: 'prod_001',
+    name: 'Cotton Jersey Top',
+    category: 'Apparel',
+    price: 24.99,
+    originalPrice: 35.00,
     imageUrl: 'https://images.unsplash.com/photo-1581655353564-df123a164d2b?q=80&w=800&auto=format&fit=crop',
-    images: ['https://images.unsplash.com/photo-1581655353564-df123a164d2b?q=80&w=1200&auto=format&fit=crop', 'https://images.unsplash.com/photo-1581655353483-853e4a475ae4?q=80&w=1200&auto=format&fit=crop'],
-    description: 'Button-up shirt sleeves and a relaxed silhouette.', rating: 4.8, reviewCount: 215, tags: ['Best Seller', 'Selling Fast'], stockStatus: 'In Stock',
-    colors: [{ name: 'Beige', class: 'bg-stone-300' }, { name: 'Black', class: 'bg-black' }], sizes: ['S', 'M', 'L', 'XL'],
-    details: { description: 'A very nice shirt.', additionalInfo: ['Fit: Relaxed'], reviews: [{ author: 'Jane D.', rating: 5, text: 'Love it!' }]}
+    images: [
+      'https://images.unsplash.com/photo-1581655353564-df123a164d2b?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1581655353483-853e4a475ae4?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1581655353542-3229541b5634?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1581655353479-79f8867ace83?q=80&w=1200&auto=format&fit=crop',
+    ],
+    description: 'Button-up shirt sleeves and a relaxed silhouette. It\'s tailored with drapey, crinkle-texture fabric that\'s responsibly sourced.',
+    rating: 4.8,
+    reviewCount: 215,
+    tags: ['Best Seller', 'Selling Fast'],
+    stockStatus: 'In Stock',
+    colors: [
+        { name: 'Beige', class: 'bg-stone-300' },
+        { name: 'Black', class: 'bg-black' },
+        { name: 'Blue', class: 'bg-blue-300' },
+        { name: 'White', class: 'bg-white' },
+    ],
+    sizes: ['S', 'M', 'L', 'XL'],
+    details: {
+      description: 'Button-up shirt sleeves and a relaxed silhouette. It\'s tailored with drapey, crinkle-texture fabric that\'s made from LENZING™ ECOVERO™ Viscose — responsibly sourced wood-based fibres produced through a process that reduces impact on forests, biodiversity and water supply. \n\n**Features**\n- Front button placket\n- Adjustable sleeve tabs\n\n**Materials & Care**\n- Content: 100% LENZING™ ECOVERO™ Viscose\n- Care: Hand wash\n- Imported',
+      additionalInfo: [
+        '**Fit:** Relaxed — An easy shape that\'s just shy of loose',
+        '**Length:** Classic — Intended to hit between high and low hip',
+        '**Model:** 5\'9"/175cm wearing a size S'
+      ],
+      reviews: [
+        { author: 'Jane D.', rating: 5, text: 'Absolutely love this top! The fabric is so soft and comfortable. Perfect for everyday wear.' },
+        { author: 'Mark T.', rating: 4, text: 'Great shirt, very stylish. Wrinkles a bit easily but that\'s expected with the fabric. Would buy again.' },
+      ]
+    }
   },
   {
-    id: 'prod_002', name: 'Kytriq NebulaBook Pro', category: 'Laptops', price: 2499.00, imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=800&auto=format&fit=crop',
-    images: ['https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1200&auto=format&fit=crop'], description: 'Unleash your creativity.', rating: 4.9, reviewCount: 450,
+    id: 'prod_002',
+    name: 'Kytriq NebulaBook Pro',
+    category: 'Laptops',
+    price: 2499.00,
+    imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=800&auto=format&fit=crop',
+    images: ['https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1200&auto=format&fit=crop'],
+    description: 'Unleash your creativity with the NebulaBook Pro. Perfect for professionals and creators.',
+    rating: 4.9,
+    reviewCount: 450,
+  },
+  {
+    id: 'prod_003',
+    name: 'Kytriq EchoBuds',
+    category: 'Audio',
+    price: 199.99,
+    imageUrl: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800&auto=format&fit=crop',
+    images: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1200&auto=format&fit=crop'],
+    description: 'Immersive sound with active noise cancellation. All-day comfort and battery life.',
+    rating: 4.6,
+    reviewCount: 890,
+  },
+  {
+    id: 'prod_004',
+    name: 'Kytriq PowerCore+',
+    category: 'Accessories',
+    price: 89.99,
+    imageUrl: 'https://images.unsplash.com/photo-1588701105398-a0c345d345e5?q=80&w=800&auto=format&fit=crop',
+    images: ['https://images.unsplash.com/photo-1588701105398-a0c345d345e5?q=80&w=1200&auto=format&fit=crop'],
+    description: 'A super-compact 20,000mAh portable charger with high-speed charging.',
+    rating: 4.7,
+    reviewCount: 1204,
+  },
+  {
+    id: 'prod_005',
+    name: 'Kytriq Fusion M1',
+    category: 'Smartphones',
+    price: 799.00,
+    imageUrl: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbf1?q=80&w=800&auto=format&fit=crop',
+    images: ['https://images.unsplash.com/photo-1601784551446-20c9e07cdbf1?q=80&w=1200&auto=format&fit=crop'],
+    description: 'The perfect balance of power and design. A flagship experience for everyone.',
+    rating: 4.5,
+    reviewCount: 543,
   },
 ];
 
 let softwareProducts: SoftwareProduct[] = [
   {
-    id: 'sw_001', name: 'Kytriq Synergy', category: 'Business', price: 49, pricingModel: 'Subscription',
+    id: 'sw_001',
+    name: 'Kytriq Synergy',
+    category: 'Business',
+    price: 49,
+    pricingModel: 'Subscription',
     imageUrl: 'https://images.unsplash.com/photo-1556742502-ec7c0e2f34b1?q=80&w=800&auto=format&fit=crop',
-    description: 'The all-in-one business management suite.', features: ['CRM', 'Project Management', 'Invoicing'], logoUrl: 'briefcase',
+    description: 'The all-in-one business management suite. Handle CRM, project management, and invoicing from a single dashboard.',
+    features: ['Client Relationship Management', 'Agile Project Boards', 'Automated Invoicing', 'Team Collaboration Tools'],
+    logoUrl: 'briefcase',
+  },
+  {
+    id: 'sw_002',
+    name: 'Kytriq PixelPro',
+    category: 'Creative',
+    price: 249,
+    pricingModel: 'One-Time',
+    imageUrl: 'https://images.unsplash.com/photo-1522199755839-a2bacb67c546?q=80&w=800&auto=format&fit=crop',
+    description: 'A powerful and intuitive design tool for digital artists and UI/UX designers. Bring your visions to life.',
+    features: ['Vector and Raster Editing', 'Advanced Layering System', 'Prototyping Tools', 'Huge Asset Library'],
+    logoUrl: 'code',
+  },
+  {
+    id: 'sw_003',
+    name: 'Kytriq Flow',
+    category: 'Productivity',
+    price: 9,
+    pricingModel: 'Subscription',
+    imageUrl: 'https://images.unsplash.com/photo-1542435503-956c469947f6?q=80&w=800&auto=format&fit=crop',
+    description: 'Organize your life and work. A smart to-do list and task manager that helps you focus on what\'s important.',
+    features: ['Smart Task Scheduling', 'Cross-Device Sync', 'Goal Tracking', 'Collaboration Features'],
+    logoUrl: 'compass'
+  },
+  {
+    id: 'sw_004',
+    name: 'Kytriq CodeDeploy',
+    category: 'Developer',
+    price: 79,
+    pricingModel: 'Subscription',
+    imageUrl: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=800&auto=format&fit=crop',
+    description: 'Automate your build, test, and deployment pipeline. Ship better code, faster, with our CI/CD platform.',
+    features: ['Git Integration', 'Parallel Job Execution', 'Secure Environment Variables', 'One-Click Rollbacks'],
+    logoUrl: 'github'
   },
 ];
 

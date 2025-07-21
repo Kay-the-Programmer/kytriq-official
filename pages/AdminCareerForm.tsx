@@ -46,6 +46,14 @@ const AdminCareerForm: React.FC<AdminCareerFormProps> = ({ job, onNavigate }) =>
         setIsGenerating(true);
         try {
             const generatedData = await GeminiService.generateJobContent(formData.title, formData.department);
+
+            // Check if generatedData is null or undefined before accessing its properties
+            if (!generatedData) {
+                console.error('AI content generation failed: API returned null or undefined');
+                alert('Failed to generate content. Please try again.');
+                return;
+            }
+
             setFormData(prev => ({ 
                 ...prev, 
                 description: generatedData.description || '',

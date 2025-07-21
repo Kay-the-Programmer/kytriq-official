@@ -11,7 +11,7 @@ interface ProductDetailPageProps {
 
 const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product, onNavigate }) => {
     const { addToCart } = useCart();
-    
+
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
     const [quantity, setQuantity] = useState(1);
     const [selectedColor, setSelectedColor] = useState(product.colors ? product.colors[0] : null);
@@ -22,7 +22,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product, onNaviga
         e.preventDefault();
         onNavigate('products');
     };
-    
+
     const handleAddToCart = () => {
         addToCart(product, quantity);
     };
@@ -53,7 +53,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product, onNaviga
             </div>
         );
     }
-    
+
     const renderMarkdown = (text: string) => {
         return text.split('\n').map((line, index) => {
             if (line.startsWith('**') && line.endsWith('**')) {
@@ -110,7 +110,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product, onNaviga
                             {product.tags?.includes('Best Seller') && <span className="flex items-center gap-1.5 text-sm font-semibold text-techflex-blue bg-techflex-blue-50 px-3 py-1 rounded-full"><Icon name="tag" className="w-4 h-4" /> Best Seller</span>}
                             {product.tags?.includes('Selling Fast') && <span className="flex items-center gap-1.5 text-sm font-semibold text-techflex-orange-700 bg-techflex-orange-50 px-3 py-1 rounded-full"><Icon name="fire" className="w-4 h-4" /> Selling Fast</span>}
                         </div>
-                        
+
                         <div className="mt-4">
                             <Rating rating={product.rating} reviewCount={product.reviewCount} />
                         </div>
@@ -120,10 +120,10 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product, onNaviga
                             {product.originalPrice && <p className="text-xl text-brand-gray-400 line-through">${product.originalPrice.toFixed(2)}</p>}
                             {discount > 0 && <p className="bg-red-100 text-red-600 font-semibold px-2 py-0.5 rounded-md text-sm">{discount}% OFF</p>}
                         </div>
-                        
+
                         {product.stockStatus === 'In Stock' && <div className="mt-2 flex items-center gap-2 text-sm text-green-600"><Icon name="check-circle" className="w-4 h-4" />In Stock</div>}
                         <div className="mt-2 flex items-center gap-2 text-sm text-brand-gray-500"><Icon name="eye" className="w-4 h-4" />{Math.floor(Math.random()*50) + 10} people are viewing this right now</div>
-                        
+
                         {product.colors && (
                             <div className="mt-6">
                                 <h3 className="text-sm font-medium text-brand-gray-900">Color: <span className="font-bold">{selectedColor?.name}</span></h3>
@@ -150,7 +150,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product, onNaviga
                                 </div>
                             </div>
                         )}
-                        
+
                         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div className="flex items-center justify-between border border-brand-gray-300 rounded-lg py-2 px-4 md:col-span-1">
                                 <button onClick={() => setQuantity(q => Math.max(1, q - 1))} className="text-brand-gray-500 hover:text-brand-gray-900"><Icon name="minus" className="w-5 h-5"/></button>
@@ -184,7 +184,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product, onNaviga
                         </nav>
                     </div>
                     <div className="py-6 text-brand-gray-600 text-sm leading-relaxed">
-                        {activeTab === 'Description' && <div>{renderMarkdown(product.details?.description || '')}</div>}
+                        {activeTab === 'Description' && <div>{renderMarkdown(product.description || '')}</div>}
                         {activeTab === 'Additional Information' && <ul className="space-y-2">{product.details?.additionalInfo.map((info, i) => <li key={i} className="list-disc list-inside">{renderMarkdown(info)}</li>)}</ul>}
                         {activeTab === 'Reviews' && (
                              <div className="space-y-6">

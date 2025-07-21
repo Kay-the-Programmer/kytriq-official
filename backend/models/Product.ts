@@ -25,7 +25,7 @@ const ProductSchema = new Schema<ProductDocument>(
     reviewCount: { type: Number, required: true },
     tags: { 
       type: [String],
-      enum: ['Best Seller', 'Selling Fast', 'New Arrival']
+      enum: ['Best Seller', 'Selling Fast', 'New Arrival', 'Flagship']
     },
     stockStatus: { 
       type: String,
@@ -50,7 +50,9 @@ const ProductSchema = new Schema<ProductDocument>(
     timestamps: true,
       toJSON: {
           transform: (_, ret: any) => {
-              ret.id = ret._id.toString();
+              if (ret._id) {
+                  ret.id = ret._id.toString();
+              }
               delete ret._id;
               delete ret.__v;
               return ret;

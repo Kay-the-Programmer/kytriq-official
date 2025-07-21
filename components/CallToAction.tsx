@@ -29,7 +29,7 @@ const CallToAction: React.FC<CallToActionProps> = ({ onNavigate }) => {
                                     href="#"
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        onNavigate('services');
+                                        onNavigate('softwareDetail', 'sw_006');
                                     }}
                                     className="inline-block bg-techflex-blue-500 hover:bg-techflex-blue text-white font-bold py-2 px-5 rounded-xl transition-all duration-300"
                                 >
@@ -40,7 +40,8 @@ const CallToAction: React.FC<CallToActionProps> = ({ onNavigate }) => {
                     </div>
 
                     {/* Trade-in Card */}
-                    <div className="bg-brand-gray-100 rounded-3xl overflow-hidden shadow-md w-full max-w-full sm:max-w-sm flex flex-col">
+                    <div
+                        className="bg-brand-gray-100 rounded-3xl overflow-hidden shadow-md w-full max-w-full sm:max-w-sm flex flex-col">
                         <div className="p-2">
                             <div
                                 className="w-full h-[300px] rounded-2xl bg-cover bg-center"
@@ -57,7 +58,7 @@ const CallToAction: React.FC<CallToActionProps> = ({ onNavigate }) => {
                                     href="#"
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        onNavigate('services');
+                                        onNavigate('products');
                                     }}
                                     className="inline-block bg-techflex-blue-500 hover:bg-techflex-blue text-white font-bold py-2 px-5 rounded-xl transition-all duration-300"
                                 >
@@ -85,7 +86,7 @@ const CallToAction: React.FC<CallToActionProps> = ({ onNavigate }) => {
                                     href="#"
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        onNavigate('services');
+                                        onNavigate('products');
                                     }}
                                     className="inline-block bg-techflex-blue-500 hover:bg-techflex-blue text-white font-bold py-2 px-5 rounded-xl transition-all duration-300"
                                 >

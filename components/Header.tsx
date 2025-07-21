@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Icon from './Icon';
 import { useCart } from '../contexts/CartContext';
@@ -11,9 +11,25 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ onCartToggle }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
+    const prevScrollPos = useRef(0);
     const { cartItems } = useCart();
     const { currentUser, logout } = useContent();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollPos = window.pageYOffset;
+            const isScrollingDown = prevScrollPos.current < currentScrollPos;
+
+            // Only hide header when scrolling down and not at the top of the page
+            setIsVisible(!isScrollingDown || currentScrollPos < 10);
+            prevScrollPos.current = currentScrollPos;
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
     const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -56,7 +72,7 @@ const Header: React.FC<HeaderProps> = ({ onCartToggle }) => {
     );
 
     return (
-        <header className="bg-techflex-blue/95 backdrop-blur-sm sticky top-0 z-50">
+        <header className={`bg-techflex-blue/95 backdrop-blur-sm sticky top-0 z-50 transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     <div className="flex-shrink-0">

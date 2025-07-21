@@ -122,51 +122,57 @@ const SoftwarePage: React.FC<SoftwarePageProps> = ({ onNavigate }) => {
                     </div>
 
                     {/* Top Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-1 gap-0">
-                        {/* Left: Text */}
+                    <div className="grid grid-cols-1 gap-6">
                         <div className="flex flex-col lg:flex-row shadow-md bg-white rounded-3xl overflow-hidden">
-                            <div className="lg:w-1/3 w-full p-2">
-                                <div
-                                    className="h-[300px] md:h-[300px] sm:h-[300px] bg-[url('/images/snap-cart.png')] bg-cover bg-center rounded-2xl"
-                                />
-                            </div>
-                            <div className="lg:w-2/3 w-full p-6 sm:p-10 flex flex-col justify-between text-left">
-                                <h3 className="text-2xl font-bold text-brand-gray-800">
-                                    Seamlessly manage your business with SnapCart.
-                                </h3>
-                                <p className="mt-4 text-base text-brand-gray-600">
-                                    Track inventory in real time, and generate instant sales reports. Simplify your retail operations with one powerful tool.                                </p>
-                                <div className="mt-6">
-                                    <a
-                                        href="#"
-                                        className="mt-4 inline-block text-blue-600 font-medium hover:underline"
-                                    >
-                                        Learn about SnapCart &rarr;
-                                    </a>
-                                </div>
+                            {/* Image */}
+                            <div className="w-full lg:w-1/3">
+                                <div className="aspect-[4/3] sm:aspect-video bg-[url('/images/snap-cart.png')] bg-cover bg-center w-full rounded-2xl lg:rounded-none lg:rounded-l-2xl" />
                             </div>
 
+                            {/* Text */}
+                            <div className="w-full lg:w-2/3 p-6 sm:p-8 flex flex-col justify-center">
+                                <h3 className="text-xl sm:text-2xl font-bold text-brand-gray-800">
+                                    Seamlessly manage your business with SnapCart.
+                                </h3>
+                                <p className="mt-4 text-sm sm:text-base text-brand-gray-600">
+                                    Track inventory in real time, and generate instant sales reports...
+                                </p>
+                                <a 
+                                    href="#" 
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        onNavigate('softwareDetail', 'snapcart');
+                                    }}
+                                    className="mt-6 text-blue-600 font-medium hover:underline">
+                                    Learn about SnapCart &rarr;
+                                </a>
+                            </div>
                         </div>
                     </div>
 
                     {/* Bottom Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {/* Left Card */}
-                        <div className="bg-white rounded-3xl shadow-md hover:shadow-2xl transition-shadow duration-300 overflow-hidden flex flex-col md:flex-row w-full max-w-3xl mx-auto">
-                            <div className="md:w-1/2 w-full overflow-hidden">
+                        <div className="bg-white rounded-3xl shadow-md hover:shadow-2xl transition-shadow duration-300 overflow-hidden flex flex-col md:flex-row w-full mx-auto">
+                            <div className="w-full md:w-1/2">
                                 <img
                                     src="/images/swift-flex.png"
-                                    alt="Software"
-                                    className="w-full h-60 md:h-full object-cover transition-transform duration-500"
+                                    alt="SwiftFlex"
+                                    className="w-full h-auto object-cover aspect-[4/3] md:aspect-auto md:h-full"
                                 />
                             </div>
-                            <div className="p-6 md:p-8 md:w-1/2 flex flex-col justify-center">
-                                <h3 className="text-2xl font-bold text-brand-gray-800">Track deliveries in real time with SwiftFlex.</h3>
-                                <p className="mt-4 text-brand-gray-600">Live delivery updates for customers and dispatchers</p>
+                            <div className="p-6 md:p-8 w-full md:w-1/2 flex flex-col justify-center">
+                                <h3 className="text-xl sm:text-2xl font-bold text-brand-gray-800">
+                                    Track deliveries in real time with SwiftFlex.
+                                </h3>
+                                <p className="mt-4 text-sm sm:text-base text-brand-gray-600">
+                                    Live delivery updates for customers and dispatchers.
+                                </p>
                                 <a
                                     href="#"
                                     onClick={(e) => {
                                         e.preventDefault();
+                                        onNavigate('softwareDetail', 'swiftflex');
                                     }}
                                     className="mt-6 text-techflex-orange font-bold hover:text-techflex-orange-600 transition-colors duration-300"
                                 >
@@ -191,6 +197,7 @@ const SoftwarePage: React.FC<SoftwarePageProps> = ({ onNavigate }) => {
                                     href="#"
                                     onClick={(e) => {
                                         e.preventDefault();
+                                        onNavigate('softwareDetail', 'swiftflex');
                                     }}
                                     className="mt-6 text-techflex-orange font-bold hover:text-techflex-orange-600 transition-colors duration-300"
                                 >
@@ -249,9 +256,9 @@ const SoftwarePage: React.FC<SoftwarePageProps> = ({ onNavigate }) => {
             {/* Why Shop With Us Section */}
             <section className="py-16 bg-techflex-blue-50">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-12">
+                    <div className="text-left mb-12">
                         <h2 className="text-3xl font-bold text-brand-gray-900">Why Shop With Us</h2>
-                        <p className="mt-4 text-lg text-brand-gray-600 max-w-2xl mx-auto">
+                        <p className="mt-4 text-lg text-brand-gray-600 max-w-2xl ">
                             We're committed to providing the best software solutions with exceptional service and support.
                         </p>
                     </div>
@@ -270,14 +277,15 @@ const SoftwarePage: React.FC<SoftwarePageProps> = ({ onNavigate }) => {
 
             {/* FAQ Section */}
             <section className="py-16 bg-techflex-blue-50">
-                <div className="container-fluid mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-12">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-left mb-12">
                         <h2 className="text-3xl font-bold text-brand-gray-900">Frequently Asked Questions</h2>
-                        <p className="mt-4 text-lg text-brand-gray-600 max-w-2xl mx-auto">
+                        <p className="mt-4 text-lg text-brand-gray-600 max-w-2xl ">
                             Find answers to common questions about our software products and services.
                         </p>
                     </div>
-                    <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+
+                    <div className="max-w-full bg-white rounded-xl shadow-md overflow-hidden">
                         <div className="p-6">
                             {faqItems.map((item, index) => (
                                 <FAQItem

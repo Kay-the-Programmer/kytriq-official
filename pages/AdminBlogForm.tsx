@@ -43,7 +43,19 @@ const AdminBlogForm: React.FC<AdminBlogFormProps> = ({ post, onNavigate }) => {
         setIsGenerating(true);
         try {
             const data = await GeminiService.generateBlogContent(formData.title, formData.tags);
-            setFormData(prev => ({ ...prev, content: data.content, excerpt: data.excerpt }));
+
+            // Check if data is null or undefined before accessing its properties
+            if (!data) {
+                console.error('AI content generation failed: API returned null or undefined');
+                alert('Failed to generate content. Please try again.');
+                return;
+            }
+
+            setFormData(prev => ({ 
+                ...prev, 
+                content: data.content || '', 
+                excerpt: data.excerpt || '' 
+            }));
         } catch (error) {
             console.error('AI content generation failed:', error);
             alert('Failed to generate content. Please try again.');

@@ -68,6 +68,15 @@ npm install -D ts-node
 
 ### 5. Start the development server
 
+You can start both the frontend and backend servers concurrently with a single command:
+
+```bash
+# Start both frontend and backend servers
+npm start
+```
+
+Or you can start them separately:
+
 ```bash
 # Start the frontend development server
 npm run dev
@@ -92,6 +101,29 @@ The application uses MongoDB for data persistence. The database models include:
 - Orders
 
 When the server starts for the first time, it will automatically seed the database with initial data if the collections are empty.
+
+## Frontend-Backend Integration
+
+The application features a full integration between the frontend and backend:
+
+1. **API Services**: The frontend uses dedicated API service modules in `services/api.ts` to communicate with the backend.
+
+2. **Context Providers**: The application uses React Context (in `contexts/ContentContext.tsx`) to manage state and handle API calls, making data available throughout the application.
+
+3. **Authentication Flow**: User authentication is handled through JWT tokens, with the token stored in localStorage and included in API requests.
+
+4. **Data Flow**:
+   - When the application loads, it fetches data from the backend API
+   - User actions (adding to cart, placing orders, etc.) trigger API calls to update the backend
+   - Admin actions (creating/editing products, etc.) are persisted to the database
+
+To verify the integration is working correctly:
+
+1. Start both servers using `npm start`
+2. Open the application in your browser
+3. Verify that products, software, blog posts, etc. are displayed (these are fetched from the backend)
+4. Try logging in with the admin credentials to access protected features
+5. Make changes in the admin interface and verify they persist after refreshing the page
 
 ### Security Features
 

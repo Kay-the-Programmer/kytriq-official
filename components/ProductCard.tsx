@@ -23,7 +23,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigate }) => {
   };
 
   return (
-    <div onClick={handleCardClick} className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 group overflow-hidden flex flex-col cursor-pointer">
+    <div onClick={handleCardClick} className="bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300 group overflow-hidden flex flex-col cursor-pointer">
       <div className="relative overflow-hidden">
         <img src={product.imageUrl} alt={product.name} className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500" />
         <span className="absolute top-4 left-4 bg-techflex-blue-100 text-techflex-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">{product.category}</span>
@@ -34,12 +34,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigate }) => {
             <Rating rating={product.rating} reviewCount={product.reviewCount} />
         </div>
         <p className="mt-2 text-brand-gray-600 flex-grow text-sm line-clamp-2">{product.description}</p>
-        <div className="mt-4 flex justify-between items-center">
-          <p className="text-2xl font-extrabold text-brand-gray-900">${product.price.toLocaleString()}</p>
-          <button onClick={handleAddToCart} className="bg-techflex-orange hover:bg-techflex-orange-600 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 text-sm">
-            Add to Cart
-          </button>
-        </div>
+          <div className="mt-4 flex flex-col items-end gap-2">
+              <p className="text-2xl font-extrabold text-brand-gray-900 w-full">${product.price.toLocaleString()}</p>
+              <button onClick={handleAddToCart}
+                      className="bg-techflex-blue-500 hover:bg-techflex-orange-600 text-white font-bold py-2 px-4 rounded-2xl transition-all duration-300 text-sm w-full">
+                  Add to Cart
+              </button>
+          </div>
       </div>
     </div>
   );

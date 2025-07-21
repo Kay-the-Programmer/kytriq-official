@@ -47,18 +47,33 @@ export const findProduct = async (id: string) => {
 
 export const saveProduct = async (product: any) => {
   if (product.id) {
-    // Update existing product
-    const updatedProduct = await Product.findByIdAndUpdate(
-      product.id,
-      { ...product, _id: product.id },
-      { new: true, runValidators: true }
-    ).exec();
-    return updatedProduct;
+    try {
+      // Update existing product
+      const updatedProduct = await Product.findByIdAndUpdate(
+        product.id,
+        { ...product, _id: product.id },
+        { new: true, runValidators: true }
+      ).exec();
+      return updatedProduct;
+    } catch (error) {
+      console.error('Error updating product:', error);
+      throw error;
+    }
   } else {
-    // Create new product
-    const newProduct = new Product(product);
-    await newProduct.save();
-    return newProduct;
+    try {
+      // Create new product with explicit _id
+      const productId = `prod_${Date.now()}`;
+      const newProduct = new Product({
+        ...product,
+        _id: productId,
+        id: productId
+      });
+      await newProduct.save();
+      return newProduct;
+    } catch (error) {
+      console.error('Error creating product:', error);
+      throw error;
+    }
   }
 };
 
