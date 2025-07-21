@@ -2,20 +2,18 @@
 import React from 'react';
 import { useContent } from '../contexts/ContentContext';
 import Icon from '../components/Icon';
+import { useNavigate } from 'react-router-dom';
 
-interface AdminBlogsPageProps {
-  onNavigate: (page: string, id?: string) => void;
-}
-
-const AdminBlogsPage: React.FC<AdminBlogsPageProps> = ({ onNavigate }) => {
+const AdminBlogsPage: React.FC = () => {
   const { blogPosts, deleteBlogPost } = useContent();
+  const navigate = useNavigate();
 
   const handleEdit = (id: string) => {
-    onNavigate('adminBlogForm', id);
+    navigate(`/admin-blog-form/${id}`);
   };
 
   const handleAddNew = () => {
-    onNavigate('adminBlogForm');
+    navigate('/admin-blog-form');
   };
 
   const handleDelete = (id: string) => {

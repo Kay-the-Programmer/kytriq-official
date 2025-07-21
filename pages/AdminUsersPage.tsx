@@ -2,20 +2,18 @@
 import React from 'react';
 import { useContent } from '../contexts/ContentContext';
 import Icon from '../components/Icon';
+import { useNavigate } from 'react-router-dom';
 
-interface AdminUsersPageProps {
-  onNavigate: (page: string, id?: string) => void;
-}
-
-const AdminUsersPage: React.FC<AdminUsersPageProps> = ({ onNavigate }) => {
+const AdminUsersPage: React.FC = () => {
   const { users, deleteUser } = useContent();
+  const navigate = useNavigate();
 
   const handleEdit = (id: string) => {
-    onNavigate('adminUserForm', id);
+    navigate(`/admin-user-form/${id}`);
   };
 
   const handleAddNew = () => {
-    onNavigate('adminUserForm');
+    navigate('/admin-user-form');
   };
 
   const handleDelete = (id: string) => {

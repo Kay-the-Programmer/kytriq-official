@@ -9,11 +9,7 @@ import AdminCareersPage from './AdminCareersPage';
 import AdminUsersPage from './AdminUsersPage';
 import AdminSoftwarePage from './AdminSoftwarePage';
 
-interface AdminPageProps {
-    onNavigate: (page: string, id?: string) => void;
-}
-
-const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
+const AdminPage: React.FC = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const location = useLocation();
 
@@ -71,13 +67,13 @@ const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
                         </ul>
                     </nav>
                     <div className="absolute bottom-4 left-4 right-4">
-                        <button
-                            onClick={() => onNavigate('home')}
+                        <Link
+                            to="/"
                             className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-semibold text-brand-gray-600 hover:bg-brand-gray-100"
                         >
                             <Icon name="chevron-left" className="w-5 h-5" />
                             <span>Back to Site</span>
-                        </button>
+                        </Link>
                     </div>
                 </aside>
 
@@ -94,12 +90,12 @@ const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
                     <Routes>
                         <Route path="/" element={<AdminDashboardPage />} />
                         <Route path="/dashboard" element={<Navigate to="/admin" replace />} />
-                        <Route path="/orders" element={<AdminOrdersPage onNavigate={onNavigate} />} />
-                        <Route path="/products" element={<AdminProductsPage onNavigate={onNavigate} />} />
-                        <Route path="/software" element={<AdminSoftwarePage onNavigate={onNavigate} />} />
-                        <Route path="/blogs" element={<AdminBlogsPage onNavigate={onNavigate} />} />
-                        <Route path="/careers" element={<AdminCareersPage onNavigate={onNavigate} />} />
-                        <Route path="/users" element={<AdminUsersPage onNavigate={onNavigate} />} />
+                        <Route path="/orders" element={<AdminOrdersPage />} />
+                        <Route path="/products" element={<AdminProductsPage />} />
+                        <Route path="/software" element={<AdminSoftwarePage />} />
+                        <Route path="/blogs" element={<AdminBlogsPage />} />
+                        <Route path="/careers" element={<AdminCareersPage />} />
+                        <Route path="/users" element={<AdminUsersPage />} />
                         <Route path="*" element={<Navigate to="/admin" replace />} />
                     </Routes>
                 </main>
