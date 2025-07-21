@@ -2,20 +2,18 @@
 import React from 'react';
 import { useContent } from '../contexts/ContentContext';
 import Icon from '../components/Icon';
+import { useNavigate } from 'react-router-dom';
 
-interface AdminCareersPageProps {
-  onNavigate: (page: string, id?: string) => void;
-}
-
-const AdminCareersPage: React.FC<AdminCareersPageProps> = ({ onNavigate }) => {
+const AdminCareersPage: React.FC = () => {
   const { jobOpenings, deleteJobOpening } = useContent();
+  const navigate = useNavigate();
 
   const handleEdit = (id: string) => {
-    onNavigate('adminCareerForm', id);
+    navigate(`/admin-career-form/${id}`);
   };
 
   const handleAddNew = () => {
-    onNavigate('adminCareerForm');
+    navigate('/admin-career-form');
   };
 
   const handleDelete = (id: string) => {
