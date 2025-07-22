@@ -41,34 +41,22 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ onNavigate }) => {
     return (
         <div className="bg-brand-gray-50">
             {/* Page Header */}
-            <div className="flex flex-col lg:flex-row overflow-hidden shadow-md h-[90vh]">
-                {/* Left: Image with no spacing  */}
-
-                <div className="w-full lg:w-2/3 h-64 lg:h-full">
-                    <img
-                        src="/images/gadgets.png"
-                        alt="SnapCart"
-                        className="w-full h-full object-cover"
-                    />
-                </div>
-
-
-                {/* Right:  Text content */}
-                <div className="w-full lg:w-1/3 p-6 sm:p-8 flex flex-col justify-center">
-                    <h1 className="text-4xl md:text-5xl font-extrabold text-brand-gray-900 tracking-tight">Shop
-                        Gadgets & Accessories</h1>
-                    <p className="mt-4 text-sm sm:text-base text-brand-gray-600">
-                        Discover the latest in technology, from powerful laptops to innovative accessories, all
-                        designed to enhance your digital life.
+            <div className="flex items-center overflow-hidden shadow-md h-[100px] bg-brand-gray-50">
+                {/* Right: Text content - 2/3 width */}
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
+                    <h1 className="text-xl font-bold text-gray-900 leading-tight mb-1">
+                        Shop Gadgets & Accessories
+                    </h1>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                        Discover the latest in technology, from powerful laptops to innovative accessories.
                     </p>
-
                 </div>
-
             </div>
 
 
             {/* Filter Bar - Full Width */}
-            <div className={`sticky ${isHeaderVisible ? 'top-16' : 'top-0'} bg-brand-gray-50 z-40 py-4 transition-all duration-300 border-b border-brand-gray-200 shadow-sm`}>
+            <div
+                className={`sticky ${isHeaderVisible ? 'top-16' : 'top-0'} bg-brand-gray-50 z-40 py-4 transition-all duration-300 border-b border-brand-gray-200 shadow-sm`}>
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
                         <div className="relative w-full md:w-1/3">
