@@ -42,18 +42,18 @@ const Footer: React.FC<FooterProps> = () => {
     }
 
     return (
-        <footer className="bg-techflex-blue text-white">
+        <footer className="bg-white shadow-sm text-brand-gray-600">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div className="md:col-span-1">
                         <Link to="/" className="cursor-pointer">
-                           <Icon name="kytriq" className="text-white text-3xl"/>
+                           <Icon name="kytriq" className="text-techflex-blue text-3xl"/>
                         </Link>
-                        <p className="mt-4 text-brand-gray-300 text-sm">Empowering Your Vision with Code & Circuits.</p>
+                        <p className="mt-4 text-brand-gray-500 text-sm">Empowering Your Vision with Code & Circuits.</p>
                         <div className="mt-6 flex space-x-4">
-                           <p className="font-bold">Follow us:</p>
+                           <p className="font-bold text-brand-gray-600">Follow us:</p>
                             {socialLinks.map((social) => (
-                                <a key={social.name} href={social.href} className="text-brand-gray-300 hover:text-white transition-colors">
+                                <a key={social.name} href={social.href} className="text-brand-gray-500 hover:text-techflex-blue transition-colors">
                                     <span className="sr-only">{social.name}</span>
                                     <Icon name={social.name} className="h-6 w-6" />
                                 </a>
@@ -63,11 +63,11 @@ const Footer: React.FC<FooterProps> = () => {
                     <div className="md:col-span-3 grid grid-cols-2 lg:grid-cols-4 gap-8">
                         {Object.entries(footerLinks).map(([title, links]) => (
                             <div key={title}>
-                                <h3 className="text-sm font-semibold tracking-wider uppercase text-brand-gray-200">{title}</h3>
+                                <h3 className="text-sm font-semibold tracking-wider uppercase text-brand-gray-600">{title}</h3>
                                 <ul className="mt-4 space-y-2">
                                     {links.map((link) => (
                                         <li key={link.name}>
-                                            <Link to={link.path} className="text-base text-brand-gray-300 hover:text-white transition-colors">{link.name}</Link>
+                                            <Link to={link.path} className="text-base text-brand-gray-500 hover:text-techflex-blue transition-colors">{link.name}</Link>
                                         </li>
                                     ))}
                                 </ul>
@@ -75,7 +75,7 @@ const Footer: React.FC<FooterProps> = () => {
                         ))}
                     </div>
                 </div>
-                <div className="mt-12 border-t border-techflex-blue-700 pt-8 text-center text-sm text-brand-gray-400">
+                <div className="mt-12 border-t border-brand-gray-200 pt-8 text-center text-sm text-brand-gray-500">
                     <p>&copy; {new Date().getFullYear()} Kytriq. All rights reserved.</p>
                 </div>
             </div>

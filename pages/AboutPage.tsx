@@ -7,8 +7,8 @@ interface AboutPageProps {
 
 const ValueCard: React.FC<{ iconName: string; title: string; children: React.ReactNode }> = ({ iconName, title, children }) => (
     <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 border border-brand-gray-100 h-full group">
-        <div className="flex items-center justify-center h-16 w-16 rounded-2xl bg-techflex-orange-100 mb-6 transition-transform duration-300 group-hover:scale-110">
-            <Icon name={iconName} className="h-8 w-8 text-techflex-orange" />
+        <div className="flex items-center justify-center h-16 w-16 rounded-2xl bg-techflex-blue-100 mb-6 transition-transform duration-300 group-hover:scale-110">
+            <Icon name={iconName} className="h-8 w-8 text-techflex-blue" />
         </div>
         <h3 className="text-2xl font-semibold text-brand-gray-900">{title}</h3>
         <p className="mt-3 text-brand-gray-600">{children}</p>
@@ -19,10 +19,10 @@ const TimelineItem: React.FC<{ iconName: string; year: string; title: string; ch
     <div className="relative pl-12">
         {!isLast && <div className="absolute left-4 top-10 h-full border-l-2 border-dashed border-brand-gray-300"></div>}
         <div className="absolute left-0 top-1 flex h-8 w-8 items-center justify-center rounded-full bg-techflex-blue-100 ring-8 ring-white">
-            <Icon name={iconName} className="h-5 w-5 text-techflex-blue-600" />
+            <Icon name={iconName} className="h-5 w-5 text-techflex-blue" />
         </div>
         <div className="flex items-center flex-wrap gap-4 mt-2">
-            <span className="bg-techflex-blue-600 text-white text-sm font-medium px-3 py-1 rounded-full">{year}</span>
+            <span className="bg-techflex-blue text-white text-sm font-medium px-3 py-1 rounded-full">{year}</span>
             <h3 className="text-lg sm:text-xl font-bold text-brand-gray-900">{title}</h3>
         </div>
         <p className="mt-2 text-brand-gray-600">{children}</p>
@@ -35,7 +35,7 @@ const TeamMemberCard: React.FC<{ imageUrl: string; name: string; title: string; 
             <img src={imageUrl} alt={name} className="w-full h-full object-cover" />
         </div>
         <h3 className="mt-6 text-xl font-semibold text-brand-gray-900">{name}</h3>
-        <p className="text-techflex-blue-600 font-medium">{title}</p>
+        <p className="text-techflex-blue font-medium">{title}</p>
     </div>
 );
 
@@ -63,12 +63,12 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
     return (
         <div className="bg-brand-gray-50">
             {/* Hero Section */}
-            <div className="relative bg-techflex-blue text-white py-24 sm:py-32 overflow-hidden">
-                <div className="absolute inset-0 bg-cover bg-center opacity-10" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80')" }}></div>
-                <div className="absolute inset-0 bg-gradient-to-b from-techflex-blue/90 to-techflex-blue"></div>
+            <div className="relative bg-white shadow-sm text-brand-gray-900 py-24 sm:py-32 overflow-hidden">
+                <div className="absolute inset-0 bg-cover bg-center opacity-5" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80')" }}></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-white/90 to-white"></div>
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
-                    <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight">We Are Kytriq.</h1>
-                    <p className="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-brand-gray-200">
+                    <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-brand-gray-900">We Are Kytriq.</h1>
+                    <p className="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-brand-gray-600">
                         Pioneering the intersection of software and hardware to build a smarter, more connected future.
                     </p>
                 </div>
@@ -77,7 +77,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
             {/* Mission Section */}
             <section className="py-20 sm:py-28 text-center">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <h2 className="text-base font-semibold tracking-wider uppercase text-techflex-orange">Our Mission</h2>
+                    <h2 className="text-base font-semibold tracking-wider uppercase text-techflex-blue">Our Mission</h2>
                     <p className="mt-4 text-3xl md:text-4xl font-extrabold text-brand-gray-900 max-w-4xl mx-auto tracking-tight">
                         To empower visionaries with robust, elegant technology solutions, transforming complex challenges into seamless user experiences.
                     </p>
@@ -142,10 +142,10 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
             </section>
 
             {/* CTA Section */}
-            <section className="bg-techflex-blue">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center text-white">
-                    <h2 className="text-4xl font-extrabold tracking-tight">Want to be part of our story?</h2>
-                    <p className="mt-4 max-w-2xl mx-auto text-lg text-brand-gray-200">
+            <section className="bg-white shadow-sm">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+                    <h2 className="text-4xl font-extrabold tracking-tight text-brand-gray-900">Want to be part of our story?</h2>
+                    <p className="mt-4 max-w-2xl mx-auto text-lg text-brand-gray-600">
                         We're always looking for passionate talent to join our mission. Explore our open positions and help us build the future.
                     </p>
                     <div className="mt-8">
@@ -155,7 +155,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
                                 e.preventDefault();
                                 onNavigate('careers');
                             }}
-                            className="bg-techflex-orange hover:bg-techflex-orange-600 text-white font-bold py-4 px-10 rounded-lg text-lg transition-all duration-300 transform hover:scale-105"
+                            className="bg-techflex-orange hover:bg-techflex-orange-600 text-white font-bold py-4 px-10 rounded-md text-lg transition-all duration-300 transform hover:scale-105"
                         >
                             View Careers
                         </a>

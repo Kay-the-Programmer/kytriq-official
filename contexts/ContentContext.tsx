@@ -10,6 +10,7 @@ import {
   OrderService,
   UserService
 } from '../services/api';
+import ConfirmDialog from '../components/ConfirmDialog';
 
 // Interfaces (could be in a separate types file)
 export interface Product {
@@ -83,9 +84,10 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
   const [users, setUsers] = useState<User[]>([]);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
 
-    const clearError = () => setError(null);
+  const clearError = () => setError(null);
 
   useEffect(() => {
     // Create an AbortController for this effect instance
@@ -446,7 +448,7 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
 
         const { user } = response;
         setCurrentUser(user);
-        return { success: true };
+        return { success: true, user };
     } catch (error) {
         console.error('Login failed:', error);
 
@@ -477,9 +479,15 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
     }
   };
 
-  const logout = () => {
+  const handleLogoutConfirm = () => {
     AuthService.logout();
     setCurrentUser(null);
+    setIsLogoutDialogOpen(false);
+  };
+
+  const logout = () => {
+    // Show the logout confirmation dialog
+    setIsLogoutDialogOpen(true);
   };
 
   const signup = async (fullName: string, email: string, password: string): Promise<{ success: boolean; user?: User; error?: { message: string; field?: string } }> => {
@@ -537,6 +545,15 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
         currentUser, login, logout, signup, placeOrder
     }}>
       {children}
+      <ConfirmDialog
+        isOpen={isLogoutDialogOpen}
+        title="Confirm Logout"
+        message="Are you sure you want to log out?"
+        confirmText="Log Out"
+        cancelText="Cancel"
+        onConfirm={handleLogoutConfirm}
+        onCancel={() => setIsLogoutDialogOpen(false)}
+      />
     </ContentContext.Provider>
   );
 };

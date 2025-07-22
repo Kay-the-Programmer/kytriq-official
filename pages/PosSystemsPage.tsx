@@ -8,8 +8,8 @@ interface PosSystemsPageProps {
 
 const FeatureCard: React.FC<{ iconName: string; title: string; children: React.ReactNode }> = ({ iconName, title, children }) => (
     <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-brand-gray-100 h-full">
-        <div className="flex items-center justify-center h-16 w-16 rounded-2xl bg-techflex-orange-100 mb-6">
-            <Icon name={iconName} className="h-8 w-8 text-techflex-orange" />
+        <div className="flex items-center justify-center h-16 w-16 rounded-2xl bg-techflex-blue-100 mb-6">
+            <Icon name={iconName} className="h-8 w-8 text-techflex-blue" />
         </div>
         <h3 className="text-2xl font-bold text-brand-gray-900">{title}</h3>
         <p className="mt-3 text-brand-gray-600">{children}</p>
@@ -19,7 +19,7 @@ const FeatureCard: React.FC<{ iconName: string; title: string; children: React.R
 const BusinessTypeCard: React.FC<{ iconName: string; title: string }> = ({ iconName, title }) => (
     <div className="text-center">
         <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-techflex-blue-100 ring-4 ring-white shadow-md">
-            <Icon name={iconName} className="h-12 w-12 text-techflex-blue-600" />
+            <Icon name={iconName} className="h-12 w-12 text-techflex-blue" />
         </div>
         <h3 className="mt-4 text-lg font-bold text-brand-gray-800">{title}</h3>
     </div>
@@ -36,7 +36,7 @@ const PosSystemsPage: React.FC<PosSystemsPageProps> = ({ onNavigate }) => {
         { icon: 'printer', title: 'Hardware Integration', description: 'Seamlessly connect to receipt printers, barcode scanners, cash drawers, and other essential peripherals.' },
         { icon: 'credit-card', title: 'Secure Payments', description: 'Accept all types of payments, including credit, debit, and mobile, with end-to-end encryption and PCI compliance.' },
     ];
-    
+
     const businessTypes = [
         { icon: 'building-storefront', title: 'Retail Stores' },
         { icon: 'cake', title: 'Cafes & Restaurants' },
@@ -47,16 +47,16 @@ const PosSystemsPage: React.FC<PosSystemsPageProps> = ({ onNavigate }) => {
     return (
         <div className="bg-brand-gray-50">
             {/* Hero Section */}
-            <div className="relative bg-techflex-blue text-white py-24 sm:py-32">
-                <div className="absolute inset-0 bg-cover bg-center opacity-10" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1556742502-ec7c0e2f34b1?auto=format&fit=crop&q=80')" }}></div>
-                <div className="absolute inset-0 bg-gradient-to-b from-techflex-blue/90 to-techflex-blue"></div>
+            <div className="relative bg-white shadow-sm text-brand-gray-900 py-24 sm:py-32">
+                <div className="absolute inset-0 bg-cover bg-center opacity-5" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1556742502-ec7c0e2f34b1?auto=format&fit=crop&q=80')" }}></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-white/90 to-white"></div>
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
-                    <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight">Modern Point-of-Sale Systems</h1>
-                    <p className="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-brand-gray-200">
+                    <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-brand-gray-900">Modern Point-of-Sale Systems</h1>
+                    <p className="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-brand-gray-600">
                         Streamline sales, manage inventory, and understand your customers with our intuitive and powerful POS solutions.
                     </p>
                     <div className="mt-10">
-                        <a href="#contact" className="bg-techflex-orange hover:bg-techflex-orange-600 text-white font-bold py-4 px-10 rounded-lg text-lg transition-all duration-300 transform hover:scale-105">
+                        <a href="#contact" className="bg-techflex-blue hover:bg-techflex-blue-600 text-white font-bold py-4 px-10 rounded-md text-lg transition-all duration-300 transform hover:scale-105">
                             Get a Demo
                         </a>
                     </div>
@@ -81,7 +81,7 @@ const PosSystemsPage: React.FC<PosSystemsPageProps> = ({ onNavigate }) => {
                     </div>
                 </div>
             </section>
-            
+
             {/* Business Types Section */}
              <section className="bg-brand-gray-100 py-20 sm:py-28">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -98,7 +98,7 @@ const PosSystemsPage: React.FC<PosSystemsPageProps> = ({ onNavigate }) => {
                     </div>
                 </div>
             </section>
-            
+
             {/* Hardware Section */}
             <section className="py-20 sm:py-28">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -109,11 +109,11 @@ const PosSystemsPage: React.FC<PosSystemsPageProps> = ({ onNavigate }) => {
                                 We offer a range of reliable and sleek hardware that works perfectly with our software. Get everything you need from a single provider.
                              </p>
                              <ul className="mt-8 space-y-4">
-                                <li className="flex items-center gap-3"><Icon name="check-circle" className="h-6 w-6 text-techflex-orange" /><span className="text-lg">POS Terminal & Stand</span></li>
-                                <li className="flex items-center gap-3"><Icon name="check-circle" className="h-6 w-6 text-techflex-orange" /><span className="text-lg">High-Speed Receipt Printer</span></li>
-                                <li className="flex items-center gap-3"><Icon name="check-circle" className="h-6 w-6 text-techflex-orange" /><span className="text-lg">Barcode Scanner</span></li>
-                                <li className="flex items-center gap-3"><Icon name="check-circle" className="h-6 w-6 text-techflex-orange" /><span className="text-lg">Secure Cash Drawer</span></li>
-                                <li className="flex items-center gap-3"><Icon name="check-circle" className="h-6 w-6 text-techflex-orange" /><span className="text-lg">Customer-Facing Display</span></li>
+                                <li className="flex items-center gap-3"><Icon name="check-circle" className="h-6 w-6 text-techflex-blue" /><span className="text-lg">POS Terminal & Stand</span></li>
+                                <li className="flex items-center gap-3"><Icon name="check-circle" className="h-6 w-6 text-techflex-blue" /><span className="text-lg">High-Speed Receipt Printer</span></li>
+                                <li className="flex items-center gap-3"><Icon name="check-circle" className="h-6 w-6 text-techflex-blue" /><span className="text-lg">Barcode Scanner</span></li>
+                                <li className="flex items-center gap-3"><Icon name="check-circle" className="h-6 w-6 text-techflex-blue" /><span className="text-lg">Secure Cash Drawer</span></li>
+                                <li className="flex items-center gap-3"><Icon name="check-circle" className="h-6 w-6 text-techflex-blue" /><span className="text-lg">Customer-Facing Display</span></li>
                              </ul>
                         </div>
                         <div>
@@ -124,15 +124,15 @@ const PosSystemsPage: React.FC<PosSystemsPageProps> = ({ onNavigate }) => {
             </section>
 
             {/* CTA Section */}
-            <section id="contact" className="bg-techflex-blue">
+            <section id="contact" className="bg-white shadow-sm">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
-                    <div className="text-center text-white">
-                        <h2 className="text-4xl font-extrabold tracking-tight">Ready to Revolutionize Your Business?</h2>
-                        <p className="mt-4 max-w-2xl mx-auto text-lg text-brand-gray-200">
+                    <div className="text-center">
+                        <h2 className="text-4xl font-extrabold tracking-tight text-brand-gray-900">Ready to Revolutionize Your Business?</h2>
+                        <p className="mt-4 max-w-2xl mx-auto text-lg text-brand-gray-600">
                            Schedule a personalized demo with one of our specialists to see how Kytriq POS can work for you.
                         </p>
                         <div className="mt-8">
-                             <a href="#" className="bg-techflex-orange hover:bg-techflex-orange-600 text-white font-bold py-4 px-10 rounded-lg text-lg transition-all duration-300 transform hover:scale-105">
+                             <a href="#" className="bg-techflex-blue hover:bg-techflex-blue-600 text-white font-bold py-4 px-10 rounded-md text-lg transition-all duration-300 transform hover:scale-105">
                                 Schedule a Demo
                             </a>
                         </div>

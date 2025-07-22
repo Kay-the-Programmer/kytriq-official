@@ -30,12 +30,21 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
         if (result.success) {
             setSnackbar({
                 open: true,
-                message: 'Login successful! Redirecting to your account...',
+                message: result.user && result.user.role === 'admin' 
+                    ? 'Login successful! Redirecting to admin dashboard...' 
+                    : 'Login successful! Redirecting to your account...',
                 type: 'success'
             });
             // Short delay before navigation to show the success message
             setTimeout(() => {
-                onNavigate('account');
+                // Redirect based on user role
+                if (result.user && result.user.role === 'admin') {
+                    // Redirect admin to admin page
+                    onNavigate('admin');
+                } else {
+                    // Redirect regular user to account page
+                    onNavigate('account');
+                }
             }, 1500);
         } else if (result.error) {
             setError(result.error.message);
@@ -64,7 +73,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
 
     return (
         <div className="bg-brand-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 min-h-[80vh]">
-            <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-lg">
+            <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-md shadow-sm">
                 <div>
                     <div className="flex justify-center">
                        <Icon name="kytriq" className="text-techflex-blue text-4xl" />
@@ -74,7 +83,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
                     </h2>
                     <p className="mt-2 text-center text-sm text-brand-gray-600">
                         Or{' '}
-                        <button onClick={() => onNavigate('signup')} className="font-medium text-techflex-orange hover:text-techflex-orange-600">
+                        <button onClick={() => onNavigate('signup')} className="font-medium text-techflex-blue hover:text-techflex-blue-600">
                             create a new account
                         </button>
                     </p>
@@ -143,22 +152,22 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
 
                     <div className="flex items-center justify-between">
                         <div className="flex items-center">
-                            <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 text-techflex-orange focus:ring-techflex-orange-dark border-brand-gray-300 rounded" />
+                            <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 text-techflex-blue focus:ring-techflex-blue-dark border-brand-gray-300 rounded" />
                             <label htmlFor="remember-me" className="ml-2 block text-sm text-brand-gray-900">Remember me</label>
                         </div>
 
                         <div className="text-sm">
-                            <a href="#" className="font-medium text-techflex-orange hover:text-techflex-orange-600">Forgot your password?</a>
+                            <a href="#" className="font-medium text-techflex-blue hover:text-techflex-blue-600">Forgot your password?</a>
                         </div>
                     </div>
 
                     <div>
                         <button
                             type="submit"
-                            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-techflex-blue hover:bg-techflex-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-techflex-blue"
+                            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-techflex-blue hover:bg-techflex-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-techflex-blue"
                         >
                             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                                <Icon name="lock-closed" className="h-5 w-5 text-techflex-blue-300 group-hover:text-techflex-blue-100" />
+                                <Icon name="lock-closed" className="h-5 w-5 text-white group-hover:text-white" />
                             </span>
                             Sign in
                         </button>

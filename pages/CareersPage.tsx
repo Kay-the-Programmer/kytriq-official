@@ -23,7 +23,7 @@ const JobListing: React.FC<{ job: JobOpening; isOpen: boolean; onToggle: () => v
         <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 border border-brand-gray-200">
             <button onClick={onToggle} className="w-full text-left p-6 flex justify-between items-center">
                 <div>
-                    <span className="text-sm font-semibold text-techflex-blue-600 bg-techflex-blue-50 px-2 py-1 rounded-md">{job.department}</span>
+                    <span className="text-sm font-semibold text-techflex-orange bg-techflex-orange-50 px-2 py-1 rounded-md">{job.department}</span>
                     <h3 className="text-xl font-bold text-brand-gray-900 mt-2">{job.title}</h3>
                     <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-sm text-brand-gray-500">
                         <span className="flex items-center gap-1.5"><Icon name="map-pin" className="w-4 h-4" />{job.location}</span>
@@ -46,7 +46,7 @@ const JobListing: React.FC<{ job: JobOpening; isOpen: boolean; onToggle: () => v
                         </ul>
                     </div>
                     <div className="mt-6">
-                        <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('careerApplication', job.id); }} className="inline-block bg-techflex-orange hover:bg-techflex-orange-600 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300">
+                        <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('careerApplication', job.id); }} className="inline-block bg-techflex-orange hover:bg-techflex-orange-600 text-white font-bold py-2 px-6 rounded-md transition-all duration-300">
                             Apply Now
                         </a>
                     </div>
@@ -84,16 +84,16 @@ const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
     return (
         <div className="bg-brand-gray-50">
             {/* Hero Section */}
-            <div className="relative bg-techflex-blue text-white py-24 sm:py-32">
-                <div className="absolute inset-0 bg-cover bg-center opacity-10" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80')" }}></div>
-                <div className="absolute inset-0 bg-gradient-to-b from-techflex-blue/90 to-techflex-blue"></div>
+            <div className="relative bg-white shadow-sm text-brand-gray-900 py-24 sm:py-32">
+                <div className="absolute inset-0 bg-cover bg-center opacity-5" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80')" }}></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-white/90 to-white"></div>
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
-                    <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight">Join Our Mission</h1>
-                    <p className="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-brand-gray-200">
+                    <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-brand-gray-900">Join Our Mission</h1>
+                    <p className="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-brand-gray-600">
                         We're a team of innovators, creators, and problem-solvers dedicated to building the future of technology. If you're passionate and driven, there's a place for you at Kytriq.
                     </p>
                     <div className="mt-10">
-                        <a href="#openings" className="bg-techflex-orange hover:bg-techflex-orange-600 text-white font-bold py-4 px-10 rounded-lg text-lg transition-all duration-300 transform hover:scale-105">
+                        <a href="#openings" className="bg-techflex-orange hover:bg-techflex-orange-600 text-white font-bold py-4 px-10 rounded-md text-lg transition-all duration-300 transform hover:scale-105">
                             See Open Roles
                         </a>
                     </div>
@@ -133,9 +133,9 @@ const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
                             <button
                                 key={dept}
                                 onClick={() => setActiveDepartment(dept)}
-                                className={`px-4 py-2 rounded-lg font-semibold text-sm transition-colors duration-200 ${
+                                className={`px-4 py-2 rounded-md font-semibold text-sm transition-colors duration-200 ${
                                     activeDepartment === dept
-                                        ? 'bg-techflex-blue text-white shadow'
+                                        ? 'bg-techflex-orange text-white shadow'
                                         : 'bg-white text-brand-gray-700 hover:bg-brand-gray-200 border border-brand-gray-200'
                                 }`}
                                 aria-pressed={activeDepartment === dept}
@@ -175,7 +175,7 @@ const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
                            We're always on the lookout for exceptional talent. If you believe you have what it takes to contribute to our mission, we'd love to hear from you.
                         </p>
                         <div className="mt-8">
-                             <a href="mailto:careers@kytriq.com" className="bg-techflex-blue hover:bg-techflex-blue-800 text-white font-bold py-3 px-8 rounded-lg text-lg transition-all duration-300">
+                             <a href="mailto:careers@kytriq.com" className="bg-techflex-orange hover:bg-techflex-orange-600 text-white font-bold py-3 px-8 rounded-md text-lg transition-all duration-300">
                                 Get in Touch
                             </a>
                         </div>

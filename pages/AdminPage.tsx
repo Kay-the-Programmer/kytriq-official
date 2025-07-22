@@ -50,10 +50,13 @@ const AdminPage: React.FC = () => {
             <div className="flex">
                 {/* Sidebar */}
                 <aside
-                    className={`fixed top-16 left-0 w-64 bg-white border-r border-brand-gray-200 p-4 transform lg:translate-x-0 transition-transform duration-200 ease-in-out z-40
-                    h-[calc(100vh-4rem)] overflow-y-auto 
-                    ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:static lg:translate-x-0 lg:top-0 lg:h-[90vh]`}
+                    className={`z-40 w-64 bg-white border-r border-brand-gray-200 p-4 
+                    transform transition-transform duration-200 ease-in-out
+                    h-[calc(100vh-4rem)] overflow-y-auto fixed top-16 left-0
+                    ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
+                    lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen`}
                 >
+
 
                 <nav>
                         <ul className="space-y-2">

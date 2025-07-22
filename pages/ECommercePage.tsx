@@ -17,9 +17,9 @@ const FeatureCard: React.FC<{ iconName: string; title: string; children: React.R
 );
 
 const PlatformCard: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-    <div className="bg-techflex-blue-50 p-8 rounded-2xl border-2 border-techflex-blue-100 h-full">
-         <h3 className="text-2xl font-bold text-techflex-blue-800">{title}</h3>
-         <p className="mt-3 text-techflex-blue-900">{children}</p>
+    <div className="bg-techflex-orange-50 p-8 rounded-2xl border-2 border-techflex-orange-100 h-full">
+         <h3 className="text-2xl font-bold text-techflex-orange">{title}</h3>
+         <p className="mt-3 text-brand-gray-600">{children}</p>
     </div>
 );
 
@@ -34,7 +34,7 @@ const ECommercePage: React.FC<ECommercePageProps> = ({ onNavigate }) => {
         { icon: 'chart-bar', title: 'Sales & Customer Analytics', description: 'Gain valuable insights into your store\'s performance, customer behavior, and marketing effectiveness.' },
         { icon: 'device-phone-mobile', title: 'Mobile-First Commerce', description: 'A flawless shopping experience on any device, ensuring your store looks and works perfectly on smartphones and tablets.' },
     ];
-    
+
     const platforms = [
         { title: 'Shopify', description: 'Rapidly launch a powerful, scalable online store with the world\'s most popular e-commerce platform.' },
         { title: 'WooCommerce', description: 'Leverage the flexibility of WordPress to create a highly customizable and content-rich shopping experience.' },
@@ -45,16 +45,16 @@ const ECommercePage: React.FC<ECommercePageProps> = ({ onNavigate }) => {
     return (
         <div className="bg-brand-gray-50">
             {/* Hero Section */}
-            <div className="relative bg-techflex-blue text-white py-24 sm:py-32">
-                <div className="absolute inset-0 bg-cover bg-center opacity-10" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1522204523234-8729aa6e3d5f?auto=format&fit=crop&q=80')" }}></div>
-                <div className="absolute inset-0 bg-gradient-to-b from-techflex-blue/90 to-techflex-blue"></div>
+            <div className="relative bg-white shadow-sm text-brand-gray-900 py-24 sm:py-32">
+                <div className="absolute inset-0 bg-cover bg-center opacity-5" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1522204523234-8729aa6e3d5f?auto=format&fit=crop&q=80')" }}></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-white/90 to-white"></div>
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
-                    <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight">Powerful E-Commerce Solutions</h1>
-                    <p className="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-brand-gray-200">
+                    <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-brand-gray-900">Powerful E-Commerce Solutions</h1>
+                    <p className="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-brand-gray-600">
                         We build high-converting online stores that turn visitors into loyal customers.
                     </p>
                     <div className="mt-10">
-                        <a href="#contact" className="bg-techflex-orange hover:bg-techflex-orange-600 text-white font-bold py-4 px-10 rounded-lg text-lg transition-all duration-300 transform hover:scale-105">
+                        <a href="#contact" className="bg-techflex-orange hover:bg-techflex-orange-600 text-white font-bold py-4 px-10 rounded-md text-lg transition-all duration-300 transform hover:scale-105">
                             Build Your Store
                         </a>
                     </div>
@@ -79,7 +79,7 @@ const ECommercePage: React.FC<ECommercePageProps> = ({ onNavigate }) => {
                     </div>
                 </div>
             </section>
-            
+
             {/* Platforms Section */}
              <section className="bg-brand-gray-100 py-20 sm:py-28">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -98,17 +98,17 @@ const ECommercePage: React.FC<ECommercePageProps> = ({ onNavigate }) => {
                     </div>
                 </div>
             </section>
-            
+
             {/* CTA Section */}
-            <section id="contact" className="bg-techflex-blue">
+            <section id="contact" className="bg-white shadow-sm">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
-                    <div className="text-center text-white">
-                        <h2 className="text-4xl font-extrabold tracking-tight">Ready to Start Selling?</h2>
-                        <p className="mt-4 max-w-2xl mx-auto text-lg text-brand-gray-200">
+                    <div className="text-center">
+                        <h2 className="text-4xl font-extrabold tracking-tight text-brand-gray-900">Ready to Start Selling?</h2>
+                        <p className="mt-4 max-w-2xl mx-auto text-lg text-brand-gray-600">
                            Let's discuss your vision. We offer a free, no-obligation consultation to plan your e-commerce project.
                         </p>
                         <div className="mt-8">
-                             <a href="#" className="bg-techflex-orange hover:bg-techflex-orange-600 text-white font-bold py-4 px-10 rounded-lg text-lg transition-all duration-300 transform hover:scale-105">
+                             <a href="#" className="bg-techflex-orange hover:bg-techflex-orange-600 text-white font-bold py-4 px-10 rounded-md text-lg transition-all duration-300 transform hover:scale-105">
                                 Get a Free Proposal
                             </a>
                         </div>
