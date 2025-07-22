@@ -12,9 +12,9 @@ interface BlogPostCardProps {
 const BlogPostCard: React.FC<BlogPostCardProps> = ({ post, onNavigate, isFeatured = false }) => {
     const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
-        onNavigate('blogDetail', post.id);
+        onNavigate('blog', post.id);
     }
-    
+
     if (isFeatured) {
         return (
             <div onClick={handleCardClick} className="col-span-1 lg:col-span-2 group cursor-pointer grid lg:grid-cols-2 gap-8 items-center bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300">
