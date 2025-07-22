@@ -615,7 +615,7 @@ const App: React.FC = () => {
           path="/admin/*" 
           element={
             <AppLayout>
-              <ProtectedRoute element={<AdminPage />} adminOnly={true} />
+              <ProtectedRoute element={(navigate) => <AdminPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />} adminOnly={true} />
             </AppLayout>
           } 
         />

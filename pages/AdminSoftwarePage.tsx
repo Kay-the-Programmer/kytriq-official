@@ -2,18 +2,20 @@
 import React from 'react';
 import { useContent } from '../contexts/ContentContext';
 import Icon from '../components/Icon';
-import { useNavigate } from 'react-router-dom';
 
-const AdminSoftwarePage: React.FC = () => {
+interface AdminSoftwarePageProps {
+  onNavigate: (page: string, id?: string) => void;
+}
+
+const AdminSoftwarePage: React.FC<AdminSoftwarePageProps> = ({ onNavigate }) => {
   const { softwareProducts, deleteSoftwareProduct } = useContent();
-  const navigate = useNavigate();
 
   const handleEdit = (id: string) => {
-    navigate(`/admin-software-form/${id}`);
+    onNavigate('adminSoftwareForm', id);
   };
 
   const handleAddNew = () => {
-    navigate('/admin-software-form');
+    onNavigate('adminSoftwareForm');
   };
 
   const handleDelete = (id: string) => {

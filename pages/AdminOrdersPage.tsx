@@ -4,6 +4,9 @@ import { useContent } from '../contexts/ContentContext';
 import { Order } from '../data/account';
 import Icon from '../components/Icon';
 
+interface AdminOrdersPageProps {
+  onNavigate: (page: string, id: string) => void;
+}
 
 const OrderStatusTracker: React.FC<{ status: Order['status'] }> = ({ status }) => {
     const statuses: Order['status'][] = ['Processing', 'Shipped', 'Delivered'];

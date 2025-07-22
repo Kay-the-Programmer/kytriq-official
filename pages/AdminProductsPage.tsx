@@ -4,7 +4,11 @@ import { useContent } from '../contexts/ContentContext';
 import Icon from '../components/Icon';
 import Snackbar from '../components/Snackbar';
 
-const AdminProductsPage: React.FC = () => {
+interface AdminProductsPageProps {
+  onNavigate: (page: string, id?: string) => void;
+}
+
+const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ onNavigate }) => {
   const { products, deleteProduct, saveProduct } = useContent();
   const [showProductForm, setShowProductForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);
