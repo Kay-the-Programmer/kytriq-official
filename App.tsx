@@ -59,7 +59,7 @@ const HomePage: React.FC = () => {
     return (
         <>
             <Hero onNavigate={handleNavigate} />
-            <div className="bg-brand-gray-50 py-16 sm:py-24">
+            <div>
                 <Features onNavigate={handleNavigate} />
             </div>
             <CallToAction onNavigate={handleNavigate} />
