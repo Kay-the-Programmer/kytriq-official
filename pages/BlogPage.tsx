@@ -1,18 +1,38 @@
 
-import React from 'react';
-import { useContent } from '../contexts/ContentContext';
+import React, { useState, useEffect } from 'react';
 import BlogPostCard from '../components/BlogPostCard';
-import Icon from '../components/Icon';
+import { BlogService, BlogPost } from '../services/api';
 
 interface BlogPageProps {
     onNavigate: (page: string, id: string) => void;
 }
 
 const BlogPage: React.FC<BlogPageProps> = ({ onNavigate }) => {
-    const { blogPosts } = useContent();
+    const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+    const [, setLoading] = useState<boolean>(true);
+    const [, setError] = useState<string | null>(null);
 
-    const featuredPost = blogPosts[0];
-    const otherPosts = blogPosts.slice(1);
+    useEffect(() => {
+        const fetchBlogPosts = async () => {
+            try {
+                setLoading(true);
+                const posts = await BlogService.getAll();
+                setBlogPosts(posts);
+                setError(null);
+            } catch (err) {
+                console.error('Failed to fetch blog posts:', err);
+                setError('Failed to load blog posts. Please try again later.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchBlogPosts().then(() => {
+        }).catch((err) => console.error(err));
+    }, []);
+
+    const featuredPost = blogPosts.length > 0 ? blogPosts[0] : null;
+    const otherPosts = blogPosts.length > 1 ? blogPosts.slice(1) : [];
 
     return (
         <div className="bg-brand-gray-50">
@@ -38,7 +58,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onNavigate }) => {
                     </div>
                 </div>
             </div>
-            
+
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
                     {featuredPost && <BlogPostCard post={featuredPost} onNavigate={onNavigate} isFeatured={true} />}

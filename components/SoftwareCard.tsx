@@ -1,84 +1,66 @@
-import React from 'react';
-import { SoftwareProduct } from '../data/software';
+import React, { memo, useCallback } from 'react';
 import Icon from './Icon';
 
 interface SoftwareCardProps {
-    software: SoftwareProduct;
+    software: {
+        id: string;
+        name: string;
+        description: string;
+        category: string;
+        price?: number;
+        imageUrl?: string;
+    };
     onNavigate: (page: string, id: string) => void;
 }
 
 const SoftwareCard: React.FC<SoftwareCardProps> = ({ software, onNavigate }) => {
-
-    const handleLearnMore = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault();
+    // Memoized navigation handler
+    const handleViewDetails = useCallback(() => {
         onNavigate('softwareDetail', software.id);
-    };
+    }, [software.id, onNavigate]);
 
     return (
-        <div className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 group flex flex-col border border-brand-gray-200">
-            {/* Image Section */}
-            {software.logoUrl && (
-                <div className="w-full bg-white flex justify-center items-center p-4">
-                    <img
-                        src={software.logoUrl}
-                        alt={software.name}
-                        className="max-h-32 sm:max-h-28 md:max-h-32 w-auto object-contain"
-                    />
+        <div className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1 transform-gpu">
+            <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <img 
+                    src={software.imageUrl || '/images/software-placeholder.jpg'} 
+                    alt={software.name}
+                    className="w-full h-44 object-cover transform group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy" // Add lazy loading for images
+                />
+            </div>
+            <div className="p-5">
+                <div className="flex items-center mb-2">
+                    <span className="text-xs font-medium text-brand-gray-500 bg-brand-gray-100 px-2 py-0.5 rounded">
+                        {software.category}
+                    </span>
+                    <div className="ml-auto flex items-center">
+                        <Icon name="star" className="h-4 w-4 text-yellow-400" />
+                    </div>
                 </div>
-            )}
-
-            {/* Content Section */}
-            <div className="px-4 sm:px-6 py-4 bg-brand-gray-50 flex-grow flex flex-col justify-between">
-                <div className="space-y-2">
-                    <h3 className="text-xl sm:text-2xl font-bold text-brand-gray-900 group-hover:text-techflex-blue transition-colors duration-300">
-                        {software.name}
-                    </h3>
-                    <span className="inline-block px-3 py-1 rounded-full bg-techflex-blue-100 text-sm font-medium text-techflex-blue-600">
-                    {software.category}
-                </span>
-                </div>
-                <p className="mt-4 sm:mt-6 text-brand-gray-600 text-sm sm:text-base leading-relaxed line-clamp-3">
+                <h3 className="text-lg font-bold text-brand-gray-800 mb-2 group-hover:text-techflex-blue transition-colors duration-300">
+                    {software.name}
+                </h3>
+                <p className="text-sm text-brand-gray-600 mb-4 line-clamp-2">
                     {software.description}
                 </p>
-            </div>
-
-            {/* Features and Pricing Section */}
-            <div className="px-4 sm:px-6 pt-4 pb-6 bg-brand-gray-50 flex-grow flex flex-col justify-between">
-                <div>
-                    <h4 className="text-sm font-semibold text-brand-gray-700 mb-3">Key Features:</h4>
-                    <ul className="space-y-2">
-                        {software.features.map((feature, index) => (
-                            <li key={index} className="flex items-start">
-                                <Icon name="check" className="h-5 w-5 text-techflex-orange mt-0.5 flex-shrink-0" />
-                                <span className="ml-2 text-sm text-brand-gray-600">{feature}</span>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
-                {/* Pricing and CTA */}
-                <div className="mt-6">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4">
-                        <p>
-                        <span className="text-xl sm:text-2xl font-extrabold text-brand-gray-900">
-                            ${software.price.toLocaleString()}
-                        </span>
-                            <span className="text-sm text-brand-gray-500 ml-1">
-                            {software.pricingModel === 'Subscription' ? '/month' : ' one-time'}
-                        </span>
-                        </p>
-                    </div>
-                    <a
-                        href="#"
-                        onClick={handleLearnMore}
-                        className="w-full text-center block bg-techflex-blue-500 hover:bg-techflex-blue-600 text-white font-bold py-3 px-4 rounded-full transition-all duration-300"
+                <div className="flex items-center justify-between mt-auto pt-2 border-t border-brand-gray-100">
+                    <span className="text-sm font-medium text-brand-gray-900">
+                        {software.price ? `$${software.price}` : 'Free Trial'}
+                    </span>
+                    <button
+                        onClick={handleViewDetails}
+                        className="inline-flex items-center text-sm font-medium text-techflex-blue hover:text-techflex-blue-600 transition-colors duration-300"
                     >
-                        Learn More
-                    </a>
+                        View Details
+                        <Icon name="arrow-right" className="ml-1 h-4 w-4" />
+                    </button>
                 </div>
             </div>
         </div>
     );
 };
 
-export default SoftwareCard;
+// Memoize the component to prevent unnecessary re-renders
+export default memo(SoftwareCard);

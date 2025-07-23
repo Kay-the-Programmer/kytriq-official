@@ -1,5 +1,6 @@
 
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import axios from 'axios';
 import {
   AuthService,
   ApiError,
@@ -33,6 +34,21 @@ export interface JobOpening {
   location: 'Remote' | 'San Francisco, CA' | 'New York, NY' | 'Hybrid'; type: 'Full-time' | 'Part-time' | 'Contract';
   description: string; responsibilities: string[]; qualifications: string[];
 }
+
+export interface JobApplication {
+  id: string;
+  jobId: string;
+  fullName: string;
+  name: string; // Added for compatibility with AdminCareersPage
+  email: string;
+  phone: string;
+  linkedin: string;
+  github: string;
+  coverLetter: string;
+  resumeUrl: string;
+  status: 'pending' | 'reviewed' | 'accepted' | 'rejected';
+  submittedAt: string;
+}
 export interface User {
   id: string; fullName: string; email: string; password?: string; role: 'admin' | 'customer'; memberSince: string;
   shippingAddress: { address: string; city: string; state: string; zip: string; };
@@ -45,13 +61,15 @@ export interface Order {
 
 interface ContentContextType {
   products: Product[]; softwareProducts: SoftwareProduct[]; blogPosts: BlogPost[];
-  jobOpenings: JobOpening[]; orders: Order[]; users: User[];
+  jobOpenings: JobOpening[]; jobApplications: JobApplication[]; orders: Order[]; users: User[];
   loading: boolean;
   error: Error | null;
   getProductById: (id: string) => Product | undefined;
   getSoftwareById: (id: string) => SoftwareProduct | undefined;
   getBlogPostById: (id: string) => BlogPost | undefined;
   getJobById: (id: string) => JobOpening | undefined;
+  getJobApplicationById: (id: string) => JobApplication | undefined;
+  getJobApplicationsByJobId: (jobId: string) => JobApplication[];
   getOrderById: (id: string) => Order | undefined;
   getUserById: (id: string) => User | undefined;
   saveProduct: (product: Product) => Promise<void>;
@@ -63,11 +81,14 @@ interface ContentContextType {
   updateOrderStatus: (orderId: string, newStatus: Order['status']) => Promise<void>;
   saveJobOpening: (job: JobOpening) => Promise<void>;
   deleteJobOpening: (jobId: string) => Promise<void>;
+  saveJobApplication: (application: JobApplication) => Promise<void>;
+  updateJobApplicationStatus: (applicationId: string, status: 'pending' | 'reviewed' | 'accepted' | 'rejected') => Promise<void>;
+  deleteJobApplication: (applicationId: string) => Promise<void>;
   saveUser: (user: User) => Promise<void>;
   deleteUser: (userId: string) => Promise<void>;
   clearError: () => void;
   currentUser: User | null;
-  login: (email: string, password: string) => Promise<{ success: boolean; error?: { message: string; field?: string } }>;
+  login: (email: string, password: string) => Promise<{ success: boolean; user?: User; error?: { message: string; field?: string } }>;
   logout: () => void;
   signup: (fullName: string, email: string, password: string) => Promise<{ success: boolean; user?: User; error?: { message: string; field?: string } }>;
   placeOrder: (items: (Product & {quantity: number})[], user: User) => Promise<string | null>;
@@ -80,6 +101,7 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
   const [softwareProducts, setSoftwareProducts] = useState<SoftwareProduct[]>([]);
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [jobOpenings, setJobOpenings] = useState<JobOpening[]>([]);
+  const [jobApplications, setJobApplications] = useState<JobApplication[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -100,42 +122,116 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
             const token = localStorage.getItem('authToken');
             let ordersData = [];
             let usersData = [];
+            let careersData = [];
 
             // Public data
-            const [productsData, softwareData, blogData, careersData] = await Promise.all([
-                ProductService.getAll({}, signal),
-                SoftwareService.getAll({}, signal),
-                BlogService.getAll({}, signal),
-                CareerService.getAll({}, signal),
-            ]);
+            try {
+                const [productsData, softwareData, blogData, fetchedCareersData] = await Promise.all([
+                    ProductService.getAll({}, signal),
+                    SoftwareService.getAll({}, signal),
+                    BlogService.getAll({}, signal),
+                    CareerService.getAll({}, signal),
+                ]);
 
-            // Check if the request was aborted before updating state
-            if (signal.aborted) return;
-
-            setProducts(productsData);
-            setSoftwareProducts(softwareData);
-            setBlogPosts(blogData);
-            setJobOpenings(careersData);
-
-            if (token) {
-                const userData = await AuthService.getCurrentUser(signal);
+                careersData = fetchedCareersData;
 
                 // Check if the request was aborted before updating state
                 if (signal.aborted) return;
 
-                setCurrentUser(userData);
+                setProducts(productsData || []);
+                setSoftwareProducts(softwareData || []);
+                setBlogPosts(blogData || []);
+                setJobOpenings(fetchedCareersData || []);
+            } catch (error) {
+                // If the request is canceled, don't update state
+                if (axios.isCancel(error)) {
+                    return;
+                }
 
-                // Fetch admin/protected data if user is admin
-                if (userData?.role === 'admin') {
-                    [ordersData, usersData] = await Promise.all([
-                        OrderService.getAll({}, signal),
-                        UserService.getAll({}, signal),
-                    ]);
-                } else { // Fetch only user's own orders if they are a customer
-                    // Assuming an endpoint /api/orders/my-orders exists for logged-in users
-                    // For now, we filter on the client, but a dedicated endpoint is better.
-                    const allOrders = await OrderService.getAll({}, signal);
-                    ordersData = allOrders.filter((o: Order) => o.userId === userData.id);
+                // For other errors, log them but continue with empty arrays
+                console.error('Error fetching public data:', error);
+                setProducts([]);
+                setSoftwareProducts([]);
+                setBlogPosts([]);
+                setJobOpenings([]);
+            }
+
+            // Initialize job applications with sample data for testing
+            // In a real implementation, you would fetch this from an API
+            const sampleApplications: JobApplication[] = [
+              {
+                id: 'app-1',
+                jobId: careersData[0]?.id || 'job-1',
+                fullName: 'John Doe',
+                name: 'John Doe', // Added for compatibility with AdminCareersPage
+                email: 'john.doe@example.com',
+                phone: '+1 (555) 123-4567',
+                linkedin: 'https://linkedin.com/in/johndoe',
+                github: 'https://github.com/johndoe',
+                coverLetter: 'I am excited about this opportunity...',
+                resumeUrl: 'https://storage.example.com/resumes/johndoe-resume.pdf',
+                status: 'pending',
+                submittedAt: '2023-06-15T10:30:00Z'
+              }
+            ];
+            setJobApplications(sampleApplications);
+
+            if (token) {
+                try {
+                    const userData = await AuthService.getCurrentUser(signal);
+
+                    // Check if the request was aborted before updating state
+                    if (signal.aborted) return;
+
+                    // If userData is null, the user is not authenticated (401 error or request canceled)
+                    if (userData === null) {
+                        // Clear the token from localStorage
+                        localStorage.removeItem('authToken');
+                        setCurrentUser(null);
+                    } else {
+                        setCurrentUser(userData);
+
+                        // Fetch admin/protected data if user is admin
+                        if (userData?.role === 'admin') {
+                            try {
+                                [ordersData, usersData] = await Promise.all([
+                                    OrderService.getAll({}, signal),
+                                    UserService.getAll({}, signal),
+                                ]);
+                            } catch (error) {
+                                // If one of the requests is canceled, don't update state
+                                if (axios.isCancel(error)) {
+                                    return;
+                                }
+                                // For other errors, continue with what data we have
+                                console.error('Error fetching admin data:', error);
+                            }
+                        } else { // Fetch only user's own orders if they are a customer
+                            try {
+                                // Assuming an endpoint /api/orders/my-orders exists for logged-in users
+                                // For now, we filter on the client, but a dedicated endpoint is better.
+                                const allOrders = await OrderService.getAll({}, signal);
+                                ordersData = allOrders.filter((o: Order) => o.userId === userData.id);
+                            } catch (error) {
+                                // If the request is canceled, don't update state
+                                if (axios.isCancel(error)) {
+                                    return;
+                                }
+                                // For other errors, continue with what data we have
+                                console.error('Error fetching user orders:', error);
+                            }
+                        }
+                    }
+                } catch (error) {
+                    // This catch block should rarely be reached now that AuthService.getCurrentUser
+                    // handles 401 and canceled requests by returning null instead of throwing
+
+                    // If the request is canceled, don't update state
+                    if (axios.isCancel(error)) {
+                        return;
+                    }
+                    // For other errors, log them but continue with public data
+                    console.error('Error fetching current user:', error);
                 }
             }
 
@@ -149,12 +245,19 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
             // Don't update state or show errors if the request was aborted
             if (signal.aborted) return;
 
+            // Don't log or show errors for canceled requests
+            if (axios.isCancel(error)) {
+                return;
+            }
+
             console.error("Failed to fetch initial data", error);
             // If token is invalid, log out user
             if (error instanceof Error) {
                 setError(error);
                 if (error.message.includes('401') || error.message.includes('403')) {
-                    logout();
+                    // Clear the token from localStorage
+                    localStorage.removeItem('authToken');
+                    setCurrentUser(null);
                 }
             } else {
                 setError(new Error('Failed to fetch initial data'));
@@ -170,6 +273,11 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
     fetchAllData().catch(error => {
         // Don't update state or show errors if the request was aborted
         if (signal.aborted) return;
+
+        // Don't log or show errors for canceled requests
+        if (axios.isCancel(error)) {
+            return;
+        }
 
         console.error('Error fetching initial data:', error);
         if (error instanceof Error) {
@@ -191,6 +299,8 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
   const getSoftwareById = (id: string) => softwareProducts.find((s: { id: string; }) => s.id === id);
   const getBlogPostById = (id: string) => blogPosts.find((b: { id: string; }) => b.id === id);
   const getJobById = (id: string) => jobOpenings.find((j: { id: string; }) => j.id === id);
+  const getJobApplicationById = (id: string) => jobApplications.find((a: { id: string; }) => a.id === id);
+  const getJobApplicationsByJobId = (jobId: string) => jobApplications.filter((a: { jobId: string; }) => a.jobId === jobId);
   const getOrderById = (id: string) => orders.find((o: { id: string; }) => o.id === id);
   const getUserById = (id: string) => users.find((u: { id: string; }) => u.id === id);
 
@@ -349,6 +459,78 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
       }
     }
   };
+
+  const saveJobApplication = async (application: JobApplication) => {
+    try {
+      // In a real implementation, you would call an API service
+      // const savedApplication = await JobApplicationService.save(application);
+
+      // For now, simulate API response
+      const savedApplication: JobApplication = {
+        ...application,
+        id: application.id || `app-${Date.now()}`,
+        submittedAt: application.submittedAt || new Date().toISOString(),
+        status: application.status || 'pending',
+        name: application.fullName // Ensure name is set to fullName for compatibility
+      };
+
+      const isNew = !application.id || !getJobApplicationById(application.id);
+
+      setJobApplications((prev: JobApplication[]) => 
+        isNew 
+          ? [savedApplication, ...prev] 
+          : prev.map(a => a.id === savedApplication.id ? savedApplication : a)
+      );
+    } catch (error) {
+      console.error('Failed to save job application:', error);
+      if (error instanceof Error) {
+        setError(error);
+      } else {
+        setError(new Error('Failed to save job application'));
+      }
+    }
+  };
+
+  const updateJobApplicationStatus = async (applicationId: string, status: 'pending' | 'reviewed' | 'accepted' | 'rejected') => {
+    try {
+      const application = getJobApplicationById(applicationId);
+      if (!application) {
+        throw new Error(`Application with ID ${applicationId} not found`);
+      }
+
+      // In a real implementation, you would call an API service
+      // await JobApplicationService.updateStatus(applicationId, status);
+
+      const updatedApplication: JobApplication = { ...application, status };
+
+      setJobApplications((prev: JobApplication[]) => 
+        prev.map(a => a.id === applicationId ? updatedApplication : a)
+      );
+    } catch (error) {
+      console.error('Failed to update job application status:', error);
+      if (error instanceof Error) {
+        setError(error);
+      } else {
+        setError(new Error('Failed to update job application status'));
+      }
+    }
+  };
+
+  const deleteJobApplication = async (applicationId: string) => {
+    try {
+      // In a real implementation, you would call an API service
+      // await JobApplicationService.delete(applicationId);
+
+      setJobApplications((prev: JobApplication[]) => prev.filter(a => a.id !== applicationId));
+    } catch (error) {
+      console.error('Failed to delete job application:', error);
+      if (error instanceof Error) {
+        setError(error);
+      } else {
+        setError(new Error('Failed to delete job application'));
+      }
+    }
+  };
    const saveUser = async (user: User) => {
     try {
       // If user.id is undefined or empty, it's a new user
@@ -435,7 +617,7 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
   };
 
 
-  const login = async (email: string, password: string): Promise<{ success: boolean; error?: { message: string; field?: string } }> => {
+  const login = async (email: string, password: string): Promise<{ success: boolean; user?: User; error?: { message: string; field?: string } }> => {
     try {
         const response = await AuthService.login(email, password);
 
@@ -479,11 +661,21 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
     }
   };
 
-  const handleLogoutConfirm = () => {
-    AuthService.logout();
-    setCurrentUser(null);
-    setIsLogoutDialogOpen(false);
-  };
+  const handleLogoutConfirm = async () => {
+        try {
+            await AuthService.logout();
+        } catch (error) {
+            console.error('Error during logout:', error);
+            // Continue with logout process even if the API call fails
+        }
+
+        // Clear the token from localStorage
+        localStorage.removeItem('authToken');
+        setCurrentUser(null);
+        setIsLogoutDialogOpen(false);
+        // Navigate to home page after logout
+        window.location.href = '/';
+    };
 
   const logout = () => {
     // Show the logout confirmation dialog
@@ -538,10 +730,10 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   return (
     <ContentContext.Provider value={{ 
-        products, softwareProducts, blogPosts, jobOpenings, orders, users, loading, error, clearError,
-        getProductById, getSoftwareById, getBlogPostById, getJobById, getOrderById, getUserById,
+        products, softwareProducts, blogPosts, jobOpenings, jobApplications, orders, users, loading, error, clearError,
+        getProductById, getSoftwareById, getBlogPostById, getJobById, getJobApplicationById, getJobApplicationsByJobId, getOrderById, getUserById,
         saveProduct, deleteProduct, saveSoftwareProduct, deleteSoftwareProduct, saveBlogPost, deleteBlogPost, updateOrderStatus,
-        saveJobOpening, deleteJobOpening, saveUser, deleteUser,
+        saveJobOpening, deleteJobOpening, saveJobApplication, updateJobApplicationStatus, deleteJobApplication, saveUser, deleteUser,
         currentUser, login, logout, signup, placeOrder
     }}>
       {children}

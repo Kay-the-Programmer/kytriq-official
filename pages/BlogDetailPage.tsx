@@ -1,14 +1,68 @@
 
-import React from 'react';
-import { BlogPost } from '../data/blog';
+import React, { useState, useEffect } from 'react';
 import Icon from '../components/Icon';
+import { BlogService, BlogPost } from '../services/api';
 
 interface BlogDetailPageProps {
-    post: BlogPost;
+    postId: string;
     onNavigate: (page: string) => void;
 }
 
-const BlogDetailPage: React.FC<BlogDetailPageProps> = ({ post, onNavigate }) => {
+const BlogDetailPage: React.FC<BlogDetailPageProps> = ({ postId, onNavigate }) => {
+    const [post, setPost] = useState<BlogPost | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchBlogPost = async () => {
+            try {
+                setLoading(true);
+                const blogPost = await BlogService.getById(postId);
+                setPost(blogPost);
+                setError(null);
+            } catch (err) {
+                console.error(`Failed to fetch blog post with ID ${postId}:`, err);
+                setError('Failed to load blog post. Please try again later.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchBlogPost();
+    }, [postId]);
+
+    if (loading) {
+        return (
+            <div className="bg-white py-12 flex justify-center items-center">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-techflex-blue mx-auto"></div>
+                    <p className="mt-4 text-brand-gray-600">Loading post...</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (error || !post) {
+        return (
+            <div className="bg-white py-12">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <div className="text-red-500 mb-4">
+                        <Icon name="exclamation-circle" className="w-12 h-12 mx-auto" />
+                    </div>
+                    <h1 className="text-2xl font-bold text-brand-gray-800 mb-4">
+                        {error || "Blog post not found"}
+                    </h1>
+                    <button
+                        onClick={() => onNavigate('blog')}
+                        className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-techflex-blue hover:bg-techflex-blue-dark"
+                    >
+                        <Icon name="chevron-left" className="w-4 h-4 mr-2" />
+                        Back to all articles
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     const renderContent = (text: string) => {
         return text.split('\n\n').map((paragraph, index) => {
@@ -22,7 +76,7 @@ const BlogDetailPage: React.FC<BlogDetailPageProps> = ({ post, onNavigate }) => 
                     </ul>
                 );
             }
-            
+
             const content = lines.map((line, lineIndex) => {
                 if (line.startsWith('**') && line.endsWith('**')) {
                     return <h3 key={lineIndex} className="text-2xl font-bold text-brand-gray-800 my-6">{line.slice(2, -2)}</h3>;

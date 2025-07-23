@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { BlogPost } from '../data/blog';
+import { BlogPost } from '../services/api';
 import Icon from './Icon';
 
 interface BlogPostCardProps {

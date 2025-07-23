@@ -67,7 +67,7 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ onNavigate }) => {
     return (
         <div className="min-h-screen bg-white">
             {/* Minimal Hero Section */}
-            <div className="bg-brand-gray-50 border-b border-brand-gray-100">
+            <div className="bg-white border-b border-brand-gray-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
                     <div className="text-center max-w-2xl mx-auto">
                         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-gray-900 mb-3">

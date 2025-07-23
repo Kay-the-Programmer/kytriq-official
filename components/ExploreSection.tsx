@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import Icon from './Icon';
 
 interface ExploreCardProps {
@@ -49,18 +49,54 @@ const ExploreCard: React.FC<ExploreCardProps> = ({
         return () => observer.disconnect();
     }, []);
 
-    const gradients = [
+    // Memoize static arrays to prevent recreation on each render
+    const gradients = useMemo(() => [
         'from-techflex-blue-500/10 via-techflex-blue-600/5 to-transparent',
         'from-techflex-orange-500/10 via-techflex-orange-600/5 to-transparent',
-    ];
+    ], []);
 
-    const accentColors = [
+    const accentColors = useMemo(() => [
         'techflex-blue-500',
         'techflex-orange-500',
-    ];
+    ], []);
 
-    const currentGradient = gradients[index % gradients.length];
-    const currentAccent = accentColors[index % accentColors.length];
+    // Memoize calculated values based on index
+    const currentGradient = useMemo(() => 
+        gradients[index % gradients.length], 
+    [gradients, index]);
+
+    const currentAccent = useMemo(() => 
+        accentColors[index % accentColors.length], 
+    [accentColors, index]);
+
+    // Memoize event handlers to prevent unnecessary re-creation
+    const handleMouseEnter = useCallback(() => {
+        setIsHovered(true);
+    }, []);
+
+    const handleMouseLeave = useCallback(() => {
+        setIsHovered(false);
+    }, []);
+
+    const handleClick = useCallback(() => {
+        onNavigate(linkPage);
+    }, [onNavigate, linkPage]);
+
+    // Memoize button event handlers
+    const handleBookmarkClick = useCallback((e: React.MouseEvent) => {
+        e.stopPropagation();
+        // Add to reading list functionality
+    }, []);
+
+    const handleShareClick = useCallback((e: React.MouseEvent) => {
+        e.stopPropagation();
+        // Share functionality
+    }, []);
+
+    const handleCTAClick = useCallback((e: React.MouseEvent) => {
+        e.preventDefault();
+        onNavigate(linkPage);
+    }, [onNavigate, linkPage]);
 
     return (
         <article
@@ -73,9 +109,9 @@ const ExploreCard: React.FC<ExploreCardProps> = ({
             style={{
                 transitionDelay: `${index * 200}ms`,
             }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            onClick={() => onNavigate(linkPage)}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onClick={handleClick}
         >
             {/* Animated background gradient */}
             <div
@@ -129,20 +165,14 @@ const ExploreCard: React.FC<ExploreCardProps> = ({
                         <div className={`absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end justify-between p-6`}>
                             <div className="flex items-center gap-2">
                                 <button
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        // Add to reading list functionality
-                                    }}
+                                    onClick={handleBookmarkClick}
                                     className="p-2.5 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors duration-300"
                                     aria-label="Save for later"
                                 >
                                     <Icon name="bookmark" className="w-4 h-4" />
                                 </button>
                                 <button
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        // Share functionality
-                                    }}
+                                    onClick={handleShareClick}
                                     className="p-2.5 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors duration-300"
                                     aria-label="Share"
                                 >
@@ -171,10 +201,7 @@ const ExploreCard: React.FC<ExploreCardProps> = ({
                         {/* Interactive CTA with enhanced styling */}
                         <div className="pt-4">
                             <button
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    onNavigate(linkPage);
-                                }}
+                                onClick={handleCTAClick}
                                 className={`group/btn inline-flex items-center gap-2 px-6 py-3 bg-${currentAccent} hover:bg-${currentAccent}/90 text-white font-semibold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95`}
                             >
                                 <span>{linkText}</span>
@@ -226,7 +253,8 @@ const ExploreSection: React.FC<ExploreSectionProps> = ({ onNavigate }) => {
         return () => observer.disconnect();
     }, [sectionRef]);
 
-    const exploreItems = [
+    // Memoize exploreItems to prevent recreation on each render
+    const exploreItems = useMemo(() => [
         {
             imageUrl: 'images/blog-post.png',
             title: 'Our Latest Tech Insights',
@@ -249,17 +277,30 @@ const ExploreSection: React.FC<ExploreSectionProps> = ({ onNavigate }) => {
             readTime: '8 min read',
             featured: false,
         },
-    ];
+    ], []);
 
-    const filters = [
+    // Memoize filters to prevent recreation on each render
+    const filters = useMemo(() => [
         { id: 'all', label: 'All Content', count: exploreItems.length },
         { id: 'insights', label: 'Insights', count: 1 },
         { id: 'portfolio', label: 'Portfolio', count: 1 },
-    ];
+    ], [exploreItems.length]);
 
-    const filteredItems = activeFilter === 'all'
-        ? exploreItems
-        : exploreItems.filter(item => item.category?.toLowerCase() === activeFilter);
+    // Memoize filteredItems calculation to prevent recalculation on each render
+    const filteredItems = useMemo(() => 
+        activeFilter === 'all'
+            ? exploreItems
+            : exploreItems.filter(item => item.category?.toLowerCase() === activeFilter),
+    [exploreItems, activeFilter]);
+
+    // Memoize event handlers to prevent unnecessary re-creation
+    const handleFilterClick = useCallback((filterId: string) => {
+        setActiveFilter(filterId);
+    }, []);
+
+    const handleSubscribeClick = useCallback(() => {
+        onNavigate('blog');
+    }, [onNavigate]);
 
     return (
         <section
@@ -298,7 +339,7 @@ const ExploreSection: React.FC<ExploreSectionProps> = ({ onNavigate }) => {
                     {filters.map((filter) => (
                         <button
                             key={filter.id}
-                            onClick={() => setActiveFilter(filter.id)}
+                            onClick={() => handleFilterClick(filter.id)}
                             className={`inline-flex items-center gap-2 px-6 py-3 rounded-2xl font-semibold text-sm transition-all duration-300 ${
                                 activeFilter === filter.id
                                     ? 'bg-techflex-blue-500 text-white shadow-lg scale-105'
@@ -337,7 +378,7 @@ const ExploreSection: React.FC<ExploreSectionProps> = ({ onNavigate }) => {
                         Want to stay updated with our latest content?
                     </p>
                     <button
-                        onClick={() => onNavigate('blog')}
+                        onClick={handleSubscribeClick}
                         className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-techflex-orange-500 to-techflex-orange-600 hover:from-techflex-orange-600 hover:to-techflex-orange-700 text-white font-semibold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
                     >
                         <Icon name="rss" className="w-5 h-5" />

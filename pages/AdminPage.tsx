@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Routes, Route, Link, useLocation, Navigate, Outlet } from 'react-router-dom';
+import { Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import Icon from '../components/Icon';
 import AdminDashboardPage from './AdminDashboardPage';
 import AdminProductsPage from './AdminProductsPage';

@@ -130,7 +130,7 @@ const BlogDetailWrapper: React.FC = () => {
         }
     };
 
-    return <BlogDetailPage post={post} onNavigate={handleNavigate} />;
+    return <BlogDetailPage postId={post.id} onNavigate={handleNavigate} />;
 };
 
 const OrderDetailWrapper: React.FC = () => {
