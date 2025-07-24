@@ -1,0 +1,47 @@
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.bg-grid-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.2' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='1'/%3E%3Ccircle cx='13' cy='13' r='1'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.bg-wave-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21.184 20c.357-.13.72-.264.888-.14 1.005-.174 1.837-.425 2.403-.484 3.557-.355 8.98-.166 12.5 1.057 10.993 3.708 23.334 3.708 34.328 0 3.52-1.223 8.942-1.412 12.5-1.057.565.06 1.397.31 2.402.483.168.075.53.21.888.14.645-.217 1.17-.43 1.624-.657 2.277-1.15 3.482-2.58 3.482-4.12 0-1.555-1.2-2.976-3.484-4.116-.445-.228-.976-.447-1.622-.664-.354-.13-.718-.264-.887-.14-1.005-.174-1.837-.425-2.403-.484-3.557-.355-8.98-.166-12.5 1.057-10.993 3.708-23.334 3.708-34.328 0-3.52-1.223-8.942-1.412-12.5-1.057-.565.06-1.397.31-2.402.483-.17.075-.53.21-.887.14-.645-.217-1.17-.43-1.624-.657C1.2 12.976 0 11.555 0 10c0-1.555 1.2-2.976 3.484-4.116.445-.228.976-.447 1.622-.664.354-.13.718-.264.887-.14 1.005-.174 1.837-.425 2.403-.484 3.557-.355 8.98-.166 12.5 1.057 10.993 3.708 23.334 3.708 34.328 0 3.52-1.223 8.942-1.412 12.5-1.057.565.06 1.397.31 2.402.483.17.075.53.21.887.14.645.217 1.17.43 1.624.657 2.277 1.15 3.482 2.58 3.482 4.12 0 1.555-1.2 2.976-3.484 4.116-.445.228-.976.447-1.622.664-.354.13-.718.264-.887.14-1.005.174-1.837.425-2.403.484-3.557.355-8.98.166-12.5-1.057-10.993-3.708-23.334-3.708-34.328 0-3.52 1.223-8.942 1.412-12.5 1.057-.565-.06-1.397-.31-2.402-.483-.17-.075-.53-.21-.887-.14-.645.217-1.17.43-1.624.657-2.277 1.15-3.482 2.58-3.482 4.12 0 1.555 1.2 2.976 3.484 4.116.445.228.976.447 1.622.664z' fill='%23ffffff' fill-rule='evenodd'/%3E%3C/svg%3E");
+}
+
+.blur-3xl {
+  filter: blur(64px);
+}
+
+/* Performance optimizations */
+.transform-gpu {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up,
+  .animate-pulse {
+    animation: none;
+  }
+  
+  .transition-all,
+  .transition-transform,
+  .transition-opacity,
+  .transition-colors {
+    transition: none;
+  }
+}

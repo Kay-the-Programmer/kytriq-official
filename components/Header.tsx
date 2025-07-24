@@ -380,6 +380,14 @@ const Header: React.FC<HeaderProps> = ({ onCartToggle }) => {
                     </div>
                 </div>
 
+                {/* Full-screen overlay when search is active */}
+                {searchOpen && (
+                    <div 
+                        className="fixed inset-0 bg-white/80 backdrop-blur-md transition-opacity duration-300 ease-out z-30"
+                        onClick={() => setSearchOpen(false)}
+                    />
+                )}
+
                 {/* Search Bar (Desktop) */}
                 <div className={`
                     absolute top-full left-0 right-0 bg-white/95 backdrop-blur-xl border-b border-brand-gray-100 transition-all duration-300 ease-out z-40
@@ -404,6 +412,15 @@ const Header: React.FC<HeaderProps> = ({ onCartToggle }) => {
                                 Search
                             </button>
                         </form>
+
+                        {/* Cancel button */}
+                        <button
+                            onClick={() => setSearchOpen(false)}
+                            className="absolute right-4 top-4 p-2 rounded-full bg-brand-gray-100 hover:bg-brand-gray-200 text-brand-gray-600 hover:text-techflex-blue transition-all duration-300"
+                            aria-label="Cancel search"
+                        >
+                            <Icon name="x-mark" className="h-5 w-5" />
+                        </button>
                     </div>
                 </div>
             </header>
@@ -451,14 +468,26 @@ const Header: React.FC<HeaderProps> = ({ onCartToggle }) => {
                                     className="w-full pl-10 pr-16 py-3 rounded-xl border border-brand-gray-200 focus:border-techflex-blue focus:ring-2 focus:ring-techflex-blue/20 outline-none transition-all duration-300"
                                 />
                                 <Icon name="search" className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-brand-gray-400" />
-                                {searchQuery.trim() && (
-                                    <button
-                                        type="submit"
-                                        className="absolute right-2 top-1/2 transform -translate-y-1/2 px-3 py-1.5 bg-techflex-blue text-white rounded-lg text-sm font-medium"
-                                    >
-                                        Go
-                                    </button>
-                                )}
+                                <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
+                                    {searchQuery.trim() && (
+                                        <>
+                                            <button
+                                                type="button"
+                                                onClick={() => setSearchQuery('')}
+                                                className="p-1.5 rounded-full bg-brand-gray-100 text-brand-gray-500 hover:bg-brand-gray-200"
+                                                aria-label="Clear search"
+                                            >
+                                                <Icon name="x-mark" className="h-3 w-3" />
+                                            </button>
+                                            <button
+                                                type="submit"
+                                                className="px-3 py-1.5 bg-techflex-blue text-white rounded-lg text-sm font-medium"
+                                            >
+                                                Go
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
                             </form>
 
                             {/* Mobile Navigation */}

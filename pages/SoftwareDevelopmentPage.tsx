@@ -16,9 +16,9 @@ const ProcessStep: React.FC<{
     progress: number;
 }> = ({ iconName, number, title, children, isActive, onClick, progress }) => (
     <div
-        className={`relative pl-20 py-8 rounded-3xl transition-all duration-500 cursor-pointer group ${
+        className={`relative pl-20 py-8 transition-all duration-500 cursor-pointer group ${
             isActive
-                ? 'bg-gradient-to-r from-white to-techflex-blue-50 shadow-xl shadow-techflex-blue-100/50 border-l-4 border-techflex-blue transform scale-102'
+                ? 'bg-gradient-to-r from-white to-techflex-blue-50 shadow-xl shadow-techflex-blue-100/50 transform scale-102'
                 : 'hover:bg-white/70 hover:translate-x-2 hover:shadow-lg backdrop-blur-sm'
         }`}
         onClick={onClick}

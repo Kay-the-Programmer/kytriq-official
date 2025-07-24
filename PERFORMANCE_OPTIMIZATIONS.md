@@ -17,7 +17,24 @@ The SoftwarePage component has been optimized with the following techniques:
 - **Throttled Scroll Handlers**: Optimized scroll event handlers with throttling and `requestAnimationFrame`
 - **Extracted Components**: Created reusable, memoized components for frequently used UI elements
 
-### 2. CareersPage Optimizations
+### 2. BlogPage Optimizations
+
+Similar optimizations have been applied to the BlogPage component:
+
+- **Component Memoization**: Created a memoized version of the component (`BlogPageOptimized.tsx`)
+- **External CSS**: Moved static styles to an external CSS file (`BlogPage.css`)
+- **Memoized Calculations**: Using `useMemo` for filtered posts, featured post, and other posts
+- **Optimized Event Handlers**: Using `useCallback` for search handler
+- **Improved Error Handling**: Added proper cleanup in useEffect to prevent memory leaks
+- **Enhanced UX**: Added loading and error states with appropriate UI
+- **Search Functionality**: Implemented debounced search with the reusable SearchInput component
+- **Reusable Components**: Created an optimized BlogPostCard component with:
+  - Memoization using React.memo
+  - Memoized event handlers
+  - Lazy loading for images
+  - Hardware acceleration with transform-gpu
+
+### 3. CareersPage Optimizations
 
 Similar optimizations have been applied to the CareersPage component:
 
@@ -31,7 +48,22 @@ Similar optimizations have been applied to the CareersPage component:
 - **Intersection Observer**: Used for triggering animations only when elements are visible
 - **Hardware Acceleration**: Applied `transform-gpu` class for hardware-accelerated animations
 
-### 3. Global Utilities
+### 4. PosSystemsPage Optimizations
+
+Similar optimizations have been applied to the PosSystemsPage component:
+
+- **Component Memoization**: Created a memoized version of the component (`PosSystemsPageOptimized.tsx`)
+- **External CSS**: Moved static styles to an external CSS file (`PosSystemsPage.css`)
+- **Memoized Components**: Created memoized versions of child components:
+  - `FeatureCard`: Memoized component for feature display
+  - `BusinessTypeCard`: Memoized component for business type display
+- **Optimized Event Handlers**: Using `useCallback` for all event handlers including hover states
+- **Memoized Calculations**: Using `useMemo` for features and business types data
+- **Performance Monitoring**: Added performance monitoring with `usePerformanceMonitor`
+- **Hardware Acceleration**: Applied `transform-gpu` class for hardware-accelerated animations
+- **Lazy Loading**: Added lazy loading for images
+
+### 5. Global Utilities
 
 Created reusable performance utilities:
 
@@ -45,7 +77,6 @@ Created reusable performance utilities:
 The following pages could benefit from similar optimizations:
 
 - `ProductsPage.tsx`
-- `BlogPage.tsx`
 - `ECommercePage.tsx`
 - `ContactPage.tsx`
 - `AboutPage.tsx`
@@ -72,7 +103,7 @@ Consider implementing these global improvements:
    ```jsx
    // Before
    export default MyComponent;
-   
+
    // After
    export default React.memo(MyComponent);
    ```
@@ -83,7 +114,7 @@ Consider implementing these global improvements:
    const handleClick = () => {
      // handler logic
    };
-   
+
    // After
    const handleClick = useCallback(() => {
      // handler logic
@@ -94,7 +125,7 @@ Consider implementing these global improvements:
    ```jsx
    // Before
    const filteredItems = items.filter(item => item.category === activeCategory);
-   
+
    // After
    const filteredItems = useMemo(() => {
      return items.filter(item => item.category === activeCategory);

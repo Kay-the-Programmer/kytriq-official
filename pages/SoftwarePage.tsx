@@ -2,12 +2,10 @@ import React, { useState, useMemo, useEffect, useCallback, lazy, Suspense, memo 
 import { useContent } from '../contexts/ContentContext';
 import Icon from '../components/Icon';
 import SoftwareCard from '../components/SoftwareCard';
-import FAQItem from '../components/FAQItem';
-import { usePerformanceMonitor, throttle } from '../utils/performanceMonitor';
+import { usePerformanceMonitor } from '../utils/performanceMonitor';
 
 // Import CSS file instead of using dynamic style injection
-import './SoftwarePage.css';
-
+import '../pages/SoftwarePage.css'
 // Lazy load heavy components
 const FAQSection = lazy(() => import('../components/FAQSection'));
 

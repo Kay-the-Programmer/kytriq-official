@@ -7,6 +7,9 @@ import CallToAction from './components/CallToAction';
 import BusinessSection from './components/BusinessSection';
 import ExploreSection from './components/ExploreSection';
 import Footer from './components/Footer';
+import ScrollProgressIndicator from './components/ScrollProgressIndicator';
+import BackToTop from './components/BackToTop';
+import ScrollToTop from './components/ScrollToTop';
 import ProductsPage from './pages/ProductsPage';
 import SoftwarePage from './pages/SoftwarePage';
 import SoftwareDetailPage from './pages/SoftwareDetailPage';
@@ -497,18 +500,21 @@ const App: React.FC = () => {
 
     return (
       <div className="bg-brand-gray-50 font-sans">
+        <ScrollProgressIndicator />
         <Header onCartToggle={() => setIsCartOpen(!isCartOpen)} />
         <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} onNavigate={handleNavigate} />
         <main>
             {typeof children === 'function' ? children(navigate) : children}
         </main>
         <Footer />
+        <BackToTop />
       </div>
     );
   };
 
   return (
     <Router>
+      <ScrollToTop />
       <Snackbar 
         message={notification.message}
         isOpen={notification.isOpen}
