@@ -629,7 +629,9 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
         }
 
         const { user } = response;
+        // Set currentUser before returning to ensure immediate redirection
         setCurrentUser(user);
+        // Return after setting the currentUser state
         return { success: true, user };
     } catch (error) {
         console.error('Login failed:', error);
