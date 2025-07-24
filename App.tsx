@@ -57,112 +57,19 @@ import SecurityPage from './pages/SecurityPage';
 import UnauthorizedPage from './pages/UnauthorizedPage';
 
 const HomePage: React.FC = () => {
-    const navigate = useNavigate();
-    const handleNavigate = (page: string, id?: string) => {
-        if (id) {
-            navigate(`/${page}/${id}`);
-        } else {
-            navigate(`/${page}`);
-        }
-    };
-
     return (
         <>
-            <Hero onNavigate={handleNavigate} />
+            <Hero />
             <div>
-                <Features onNavigate={handleNavigate} />
+                <Features />
             </div>
-            <CallToAction onNavigate={handleNavigate} />
+            <CallToAction />
             <BusinessSection />
-            <ExploreSection onNavigate={handleNavigate} />
+            <ExploreSection />
         </>
     );
 };
 
-// Wrapper components for pages that need parameters
-const ProductDetailWrapper: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
-    const { getProductById } = useContent();
-    const navigate = useNavigate();
-    const product = getProductById(id!);
-
-    if (!product) {
-        return <Navigate to="/products" />;
-    }
-
-    const handleNavigate = (page: string, id?: string) => {
-        if (id) {
-            navigate(`/${page}/${id}`);
-        } else {
-            navigate(`/${page}`);
-        }
-    };
-
-    return <ProductDetailPage product={product} onNavigate={handleNavigate} />;
-};
-
-const SoftwareDetailWrapper: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
-    const { getSoftwareById } = useContent();
-    const navigate = useNavigate();
-    const software = getSoftwareById(id!);
-
-    if (!software) {
-        return <Navigate to="/software" />;
-    }
-
-    const handleNavigate = (page: string, id?: string) => {
-        if (id) {
-            navigate(`/${page}/${id}`);
-        } else {
-            navigate(`/${page}`);
-        }
-    };
-
-    return <SoftwareDetailPage software={software} onNavigate={handleNavigate} />;
-};
-
-const BlogDetailWrapper: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
-    const { getBlogPostById } = useContent();
-    const navigate = useNavigate();
-    const post = getBlogPostById(id!);
-
-    if (!post) {
-        return <Navigate to="/blog" />;
-    }
-
-    const handleNavigate = (page: string, id?: string) => {
-        if (id) {
-            navigate(`/${page}/${id}`);
-        } else {
-            navigate(`/${page}`);
-        }
-    };
-
-    return <BlogDetailPage postId={post.id} onNavigate={handleNavigate} />;
-};
-
-const OrderDetailWrapper: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
-    const { getOrderById } = useContent();
-    const navigate = useNavigate();
-    const order = getOrderById(id!);
-
-    if (!order) {
-        return <Navigate to="/account" />;
-    }
-
-    const handleNavigate = (page: string, id?: string) => {
-        if (id) {
-            navigate(`/${page}/${id}`);
-        } else {
-            navigate(`/${page}`);
-        }
-    };
-
-    return <OrderDetailPage order={order} onNavigate={handleNavigate} />;
-};
 
 // Protected route component
 const ProtectedRoute: React.FC<{
@@ -184,296 +91,6 @@ const ProtectedRoute: React.FC<{
 };
 
 
-// Wrapper for SoftwareGetStarted page
-const SoftwareGetStartedWrapper: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
-    const { getSoftwareById } = useContent();
-    const navigate = useNavigate();
-    const software = getSoftwareById(id!);
-
-    if (!software) {
-        return <Navigate to="/software" />;
-    }
-
-    const handleNavigate = (page: string, id?: string) => {
-        if (id) {
-            navigate(`/${page}/${id}`);
-        } else {
-            navigate(`/${page}`);
-        }
-    };
-
-    const handleCompleteSetup = (softwareId: string) => {
-        navigate(`/software-setup-confirmation/${softwareId}`);
-    };
-
-    return <SoftwareGetStartedPage 
-        software={software} 
-        onNavigate={handleNavigate} 
-        onCompleteSetup={handleCompleteSetup} 
-    />;
-};
-
-// Wrapper for SoftwareSetupConfirmation page
-const SoftwareSetupConfirmationWrapper: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
-    const { getSoftwareById } = useContent();
-    const navigate = useNavigate();
-    const software = getSoftwareById(id!);
-
-    if (!software) {
-        return <Navigate to="/software" />;
-    }
-
-    const handleNavigate = (page: string, id?: string) => {
-        if (id) {
-            navigate(`/${page}/${id}`);
-        } else {
-            navigate(`/${page}`);
-        }
-    };
-
-    return <SoftwareSetupConfirmationPage software={software} onNavigate={handleNavigate} />;
-};
-
-// Wrapper for CareerApplication page
-const CareerApplicationWrapper: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
-    const { getJobById } = useContent();
-    const navigate = useNavigate();
-    const job = getJobById(id!);
-
-    if (!job) {
-        return <Navigate to="/careers" />;
-    }
-
-    const handleNavigate = (page: string, id?: string) => {
-        if (id) {
-            navigate(`/${page}/${id}`);
-        } else {
-            navigate(`/${page}`);
-        }
-    };
-
-    const handleCompleteApplication = (jobId: string) => {
-        navigate(`/career-application-confirmation/${jobId}`);
-    };
-
-    return <CareerApplicationPage 
-        job={job} 
-        onNavigate={handleNavigate} 
-        onCompleteApplication={handleCompleteApplication} 
-    />;
-};
-
-// Wrapper for CareerApplicationConfirmation page
-const CareerApplicationConfirmationWrapper: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
-    const { getJobById } = useContent();
-    const navigate = useNavigate();
-    const job = getJobById(id!);
-
-    if (!job) {
-        return <Navigate to="/careers" />;
-    }
-
-    const handleNavigate = (page: string, id?: string) => {
-        if (id) {
-            navigate(`/${page}/${id}`);
-        } else {
-            navigate(`/${page}`);
-        }
-    };
-
-    return <CareerApplicationConfirmationPage job={job} onNavigate={handleNavigate} />;
-};
-
-// Wrapper for AdminProductForm page
-const AdminProductFormWrapper: React.FC = () => {
-    const { id } = useParams<{ id?: string }>();
-    const { getProductById } = useContent();
-    const navigate = useNavigate();
-    const product = id ? getProductById(id) : null;
-
-    const handleNavigate = (page: string, id?: string) => {
-        if (id) {
-            navigate(`/${page}/${id}`);
-        } else {
-            navigate(`/${page}`);
-        }
-    };
-
-    return <AdminProductForm product={product} onNavigate={handleNavigate} />;
-};
-
-// Wrapper for AdminSoftwareForm page
-const AdminSoftwareFormWrapper: React.FC = () => {
-    const { id } = useParams<{ id?: string }>();
-    const { getSoftwareById } = useContent();
-    const navigate = useNavigate();
-    const software = id ? getSoftwareById(id) : null;
-
-    const handleNavigate = (page: string, id?: string) => {
-        if (id) {
-            navigate(`/${page}/${id}`);
-        } else {
-            navigate(`/${page}`);
-        }
-    };
-
-    return <AdminSoftwareForm software={software} onNavigate={handleNavigate} />;
-};
-
-// Wrapper for AdminBlogForm page
-const AdminBlogFormWrapper: React.FC = () => {
-    const { id } = useParams<{ id?: string }>();
-    const { getBlogPostById } = useContent();
-    const navigate = useNavigate();
-    const post = id ? getBlogPostById(id) : null;
-
-    const handleNavigate = (page: string, id?: string) => {
-        if (id) {
-            navigate(`/${page}/${id}`);
-        } else {
-            navigate(`/${page}`);
-        }
-    };
-
-    return <AdminBlogForm post={post} onNavigate={handleNavigate} />;
-};
-
-// Wrapper for AdminCareerForm page
-const AdminCareerFormWrapper: React.FC = () => {
-    const { id } = useParams<{ id?: string }>();
-    const { getJobById } = useContent();
-    const navigate = useNavigate();
-    const job = id ? getJobById(id) : null;
-
-    const handleNavigate = (page: string, id?: string) => {
-        if (id) {
-            navigate(`/${page}/${id}`);
-        } else {
-            navigate(`/${page}`);
-        }
-    };
-
-    return <AdminCareerForm job={job} onNavigate={handleNavigate} />;
-};
-
-// Wrapper for AdminUserForm page
-const AdminUserFormWrapper: React.FC = () => {
-    const { id } = useParams<{ id?: string }>();
-    const { getUserById } = useContent();
-    const navigate = useNavigate();
-    const user = id ? getUserById(id) : null;
-
-    const handleNavigate = (page: string, id?: string) => {
-        if (id) {
-            navigate(`/${page}/${id}`);
-        } else {
-            navigate(`/${page}`);
-        }
-    };
-
-    return <AdminUserForm user={user} onNavigate={handleNavigate} />;
-};
-
-// Wrapper for OrderConfirmation page
-const OrderConfirmationWrapper: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
-    const navigate = useNavigate();
-
-    const handleNavigate = (page: string, id?: string) => {
-        if (id) {
-            navigate(`/${page}/${id}`);
-        } else {
-            navigate(`/${page}`);
-        }
-    };
-
-    return <OrderConfirmationPage orderId={id} onNavigate={handleNavigate} />;
-};
-
-// Wrapper for Checkout page
-const CheckoutWrapper: React.FC = () => {
-    const navigate = useNavigate();
-    const { cartItems, clearCart } = useCart();
-    const { currentUser, placeOrder } = useContent();
-
-    const handleNavigate = (page: string, id?: string) => {
-        if (id) {
-            navigate(`/${page}/${id}`);
-        } else {
-            navigate(`/${page}`);
-        }
-    };
-
-    const handlePlaceOrder = async () => {
-        if (currentUser) {
-            const newOrderId = await placeOrder(cartItems, currentUser);
-            if (newOrderId) {
-                clearCart();
-                navigate(`/order-confirmation/${newOrderId}`);
-            } else {
-                alert('There was an error placing your order. Please try again.');
-            }
-        } else {
-            alert('You must be logged in to place an order.');
-            navigate('/login');
-        }
-    };
-
-    return <CheckoutPage onPlaceOrder={handlePlaceOrder} onNavigate={handleNavigate} />;
-};
-
-// Wrapper for Contact page
-const ContactWrapper: React.FC = () => {
-    const navigate = useNavigate();
-
-    const handleNavigate = (page: string, id?: string) => {
-        if (id) {
-            navigate(`/${page}/${id}`);
-        } else {
-            navigate(`/${page}`);
-        }
-    };
-
-    const handleSendMessage = () => {
-        navigate('/contact-confirmation');
-    };
-
-    return <ContactPage onNavigate={handleNavigate} onSendMessage={handleSendMessage} />;
-};
-
-// Wrapper for Login page
-const LoginPageWrapper: React.FC = () => {
-    const navigate = useNavigate();
-
-    const handleNavigate = (page: string, id?: string) => {
-        if (id) {
-            navigate(`/${page}/${id}`);
-        } else {
-            navigate(`/${page}`);
-        }
-    };
-
-    return <LoginPage onNavigate={handleNavigate} />;
-};
-
-// Wrapper for SignUp page
-const SignUpPageWrapper: React.FC = () => {
-    const navigate = useNavigate();
-
-    const handleNavigate = (page: string, id?: string) => {
-        if (id) {
-            navigate(`/${page}/${id}`);
-        } else {
-            navigate(`/${page}`);
-        }
-    };
-
-    return <SignUpPage onNavigate={handleNavigate} />;
-};
 
 // Main App component with React Router
 const App: React.FC = () => {
@@ -533,19 +150,19 @@ const App: React.FC = () => {
         <Route path="/" element={<AppLayout><HomePage /></AppLayout>} />
 
         {/* Product routes */}
-        <Route path="/products" element={<AppLayout>{(navigate) => <ProductsPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
-        <Route path="/product/:id" element={<AppLayout><ProductDetailWrapper /></AppLayout>} />
-        <Route path="/productDetail/:id" element={<AppLayout><ProductDetailWrapper /></AppLayout>} />
+        <Route path="/products" element={<AppLayout><ProductsPage /></AppLayout>} />
+        <Route path="/product/:id" element={<AppLayout><ProductDetailPage /></AppLayout>} />
+        <Route path="/productDetail/:id" element={<AppLayout><ProductDetailPage /></AppLayout>} />
 
         {/* Software routes */}
-        <Route path="/software" element={<AppLayout>{(navigate) => <SoftwarePage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
-        <Route path="/software/:id" element={<AppLayout><SoftwareDetailWrapper /></AppLayout>} />
-        <Route path="/softwareDetail/:id" element={<AppLayout><SoftwareDetailWrapper /></AppLayout>} />
+        <Route path="/software" element={<AppLayout><SoftwarePage /></AppLayout>} />
+        <Route path="/software/:id" element={<AppLayout><SoftwareDetailPage /></AppLayout>} />
+        <Route path="/softwareDetail/:id" element={<AppLayout><SoftwareDetailPage /></AppLayout>} />
         <Route 
           path="/software-get-started/:id" 
           element={
             <AppLayout>
-              <ProtectedRoute element={<SoftwareGetStartedWrapper />} />
+              <ProtectedRoute element={<SoftwareGetStartedPage />} />
             </AppLayout>
           } 
         />
@@ -553,7 +170,7 @@ const App: React.FC = () => {
           path="/softwareGetStarted/:id" 
           element={
             <AppLayout>
-              <ProtectedRoute element={<SoftwareGetStartedWrapper />} />
+              <ProtectedRoute element={<SoftwareGetStartedPage />} />
             </AppLayout>
           } 
         />
@@ -561,21 +178,21 @@ const App: React.FC = () => {
           path="/software-setup-confirmation/:id" 
           element={
             <AppLayout>
-              <ProtectedRoute element={<SoftwareSetupConfirmationWrapper />} />
+              <ProtectedRoute element={<SoftwareSetupConfirmationPage />} />
             </AppLayout>
           } 
         />
 
         {/* Blog routes */}
-        <Route path="/blog" element={<AppLayout>{(navigate) => <BlogPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
-        <Route path="/blog/:id" element={<AppLayout><BlogDetailWrapper /></AppLayout>} />
+        <Route path="/blog" element={<AppLayout><BlogPage /></AppLayout>} />
+        <Route path="/blog/:id" element={<AppLayout><BlogDetailPage /></AppLayout>} />
 
         {/* E-commerce routes */}
         <Route 
           path="/checkout" 
           element={
             <AppLayout>
-              <ProtectedRoute element={<CheckoutWrapper />} />
+              <ProtectedRoute element={<CheckoutPage />} />
             </AppLayout>
           } 
         />
@@ -583,7 +200,7 @@ const App: React.FC = () => {
           path="/order-confirmation/:id" 
           element={
             <AppLayout>
-              <ProtectedRoute element={<OrderConfirmationWrapper />} />
+              <ProtectedRoute element={<OrderConfirmationPage />} />
             </AppLayout>
           } 
         />
@@ -591,7 +208,7 @@ const App: React.FC = () => {
           path="/account" 
           element={
             <AppLayout>
-              <ProtectedRoute element={(navigate) => <AccountPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />} />
+              <ProtectedRoute element={<AccountPage />} />
             </AppLayout>
           } 
         />
@@ -599,24 +216,24 @@ const App: React.FC = () => {
           path="/orderDetail/:id" 
           element={
             <AppLayout>
-              <ProtectedRoute element={<OrderDetailWrapper />} />
+              <ProtectedRoute element={<OrderDetailPage />} />
             </AppLayout>
           } 
         />
 
         {/* Service pages */}
-        <Route path="/electronics" element={<AppLayout>{(navigate) => <ElectronicsPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
-        <Route path="/pos-systems" element={<AppLayout>{(navigate) => <PosSystemsPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
-        <Route path="/ecommerce" element={<AppLayout>{(navigate) => <ECommercePage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
-        <Route path="/software-development" element={<AppLayout>{(navigate) => <SoftwareDevelopmentPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
+        <Route path="/electronics" element={<AppLayout><ElectronicsPage /></AppLayout>} />
+        <Route path="/pos-systems" element={<AppLayout><PosSystemsPage /></AppLayout>} />
+        <Route path="/ecommerce" element={<AppLayout><ECommercePage /></AppLayout>} />
+        <Route path="/software-development" element={<AppLayout><SoftwareDevelopmentPage /></AppLayout>} />
 
         {/* Company pages */}
-        <Route path="/about" element={<AppLayout>{(navigate) => <AboutPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
-        <Route path="/careers" element={<AppLayout>{(navigate) => <CareersPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
-        <Route path="/career-application/:id" element={<AppLayout><CareerApplicationWrapper /></AppLayout>} />
-        <Route path="/career-application-confirmation/:id" element={<AppLayout><CareerApplicationConfirmationWrapper /></AppLayout>} />
-        <Route path="/contact" element={<AppLayout><ContactWrapper /></AppLayout>} />
-        <Route path="/contact-confirmation" element={<AppLayout>{(navigate) => <ContactConfirmationPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
+        <Route path="/about" element={<AppLayout><AboutPage /></AppLayout>} />
+        <Route path="/careers" element={<AppLayout><CareersPage /></AppLayout>} />
+        <Route path="/career-application/:id" element={<AppLayout><CareerApplicationPage /></AppLayout>} />
+        <Route path="/career-application-confirmation/:id" element={<AppLayout><CareerApplicationConfirmationPage /></AppLayout>} />
+        <Route path="/contact" element={<AppLayout><ContactPage /></AppLayout>} />
+        <Route path="/contact-confirmation" element={<AppLayout><ContactConfirmationPage /></AppLayout>} />
 
         {/* Policy pages */}
         <Route path="/privacy" element={<AppLayout><PrivacyPolicyPage /></AppLayout>} />
@@ -638,7 +255,7 @@ const App: React.FC = () => {
           path="/admin-product-form/:id?" 
           element={
             <AppLayout>
-              <ProtectedRoute element={<AdminProductFormWrapper />} adminOnly={true} />
+              <ProtectedRoute element={<AdminProductForm />} adminOnly={true} />
             </AppLayout>
           } 
         />
@@ -646,7 +263,7 @@ const App: React.FC = () => {
           path="/admin-software-form/:id?" 
           element={
             <AppLayout>
-              <ProtectedRoute element={<AdminSoftwareFormWrapper />} adminOnly={true} />
+              <ProtectedRoute element={<AdminSoftwareForm />} adminOnly={true} />
             </AppLayout>
           } 
         />
@@ -654,7 +271,7 @@ const App: React.FC = () => {
           path="/adminSoftwareForm/:id?" 
           element={
             <AppLayout>
-              <ProtectedRoute element={<AdminSoftwareFormWrapper />} adminOnly={true} />
+              <ProtectedRoute element={<AdminSoftwareForm />} adminOnly={true} />
             </AppLayout>
           } 
         />
@@ -662,7 +279,7 @@ const App: React.FC = () => {
           path="/admin-blog-form/:id?" 
           element={
             <AppLayout>
-              <ProtectedRoute element={<AdminBlogFormWrapper />} adminOnly={true} />
+              <ProtectedRoute element={<AdminBlogForm />} adminOnly={true} />
             </AppLayout>
           } 
         />
@@ -670,7 +287,7 @@ const App: React.FC = () => {
           path="/admin-career-form/:id?" 
           element={
             <AppLayout>
-              <ProtectedRoute element={<AdminCareerFormWrapper />} adminOnly={true} />
+              <ProtectedRoute element={<AdminCareerForm />} adminOnly={true} />
             </AppLayout>
           } 
         />
@@ -678,30 +295,30 @@ const App: React.FC = () => {
           path="/admin-user-form/:id?" 
           element={
             <AppLayout>
-              <ProtectedRoute element={<AdminUserFormWrapper />} adminOnly={true} />
+              <ProtectedRoute element={<AdminUserForm />} adminOnly={true} />
             </AppLayout>
           } 
         />
 
         {/* Auth routes */}
-        <Route path="/login" element={<AppLayout><LoginPageWrapper /></AppLayout>} />
-        <Route path="/signup" element={<AppLayout><SignUpPageWrapper /></AppLayout>} />
+        <Route path="/login" element={<AppLayout><LoginPage /></AppLayout>} />
+        <Route path="/signup" element={<AppLayout><SignUpPage /></AppLayout>} />
 
         {/* Support routes */}
-        <Route path="/help" element={<AppLayout>{(navigate) => <HelpPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
-        <Route path="/docs" element={<AppLayout>{(navigate) => <DocumentationPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
+        <Route path="/help" element={<AppLayout><HelpPage /></AppLayout>} />
+        <Route path="/docs" element={<AppLayout><DocumentationPage /></AppLayout>} />
         <Route 
           path="/api" 
           element={
             <AppLayout>
               <ProtectedRoute 
-                element={(navigate) => <ApiReferencePage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />} 
+                element={<ApiReferencePage />}
                 adminOnly={true} 
               />
             </AppLayout>
           } 
         />
-        <Route path="/status" element={<AppLayout>{(navigate) => <StatusPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
+        <Route path="/status" element={<AppLayout><StatusPage /></AppLayout>} />
 
         {/* Access control */}
         <Route path="/unauthorized" element={<AppLayout><UnauthorizedPage /></AppLayout>} />

@@ -1,14 +1,12 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Icon from '../components/Icon';
 import { useContent } from '../contexts/ContentContext';
 import Snackbar, { SnackbarType } from '../components/Snackbar';
 
-interface LoginPageProps {
-    onNavigate: (page: string) => void;
-}
-
-const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
+const LoginPage: React.FC = () => {
+    const navigate = useNavigate();
     const { login } = useContent();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -40,10 +38,10 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
                 // Redirect based on user role
                 if (result.user && result.user.role === 'admin') {
                     // Redirect admin to admin page
-                    onNavigate('admin');
+                    navigate('/admin');
                 } else {
                     // Redirect regular user to account page
-                    onNavigate('account');
+                    navigate('/account');
                 }
             }, 1500);
         } else if (result.error) {
@@ -83,7 +81,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
                     </h2>
                     <p className="mt-2 text-center text-sm text-brand-gray-600">
                         Or{' '}
-                        <button onClick={() => onNavigate('signup')} className="font-medium text-techflex-blue hover:text-techflex-blue-600">
+                        <button onClick={() => navigate('/signup')} className="font-medium text-techflex-blue hover:text-techflex-blue-600">
                             create a new account
                         </button>
                     </p>
