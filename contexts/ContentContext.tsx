@@ -629,7 +629,14 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
         }
 
         const { user } = response;
-        setCurrentUser(user);
+
+        // By wrapping the state update in a promise, we ensure that the function
+        // waits for the state to be updated before returning.
+        await new Promise(resolve => {
+          setCurrentUser(user);
+          resolve();
+        });
+
         return { success: true, user };
     } catch (error) {
         console.error('Login failed:', error);
