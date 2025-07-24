@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { usePerformanceMonitor } from '../utils/performanceMonitor';
 import { SoftwareProduct } from '../contexts/ContentContext';
 import { useContent } from '../contexts/ContentContext';
 import Icon from '../components/Icon';
@@ -25,6 +26,7 @@ const defaultCategories: SoftwareProduct['category'][] = ['Business', 'Creative'
 const pricingModels: SoftwareProduct['pricingModel'][] = ['Subscription', 'One-Time'];
 
 const AdminSoftwareForm: React.FC<AdminSoftwareFormProps> = ({ software, onNavigate }) => {
+  usePerformanceMonitor('AdminSoftwareForm');
   const { saveSoftwareProduct, softwareProducts } = useContent();
   const [formData, setFormData] = useState<SoftwareProduct>(software || { ...emptySoftware, id: '' });
   const [features, setFeatures] = useState<string[]>(software?.features || []);

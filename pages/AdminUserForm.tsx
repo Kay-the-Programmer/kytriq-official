@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { usePerformanceMonitor } from '../utils/performanceMonitor';
 import { User } from '../data/account';
 import { useContent } from '../contexts/ContentContext';
 import Icon from '../components/Icon';
@@ -24,6 +25,7 @@ const emptyUser: User = {
 };
 
 const AdminUserForm: React.FC<AdminUserFormProps> = ({ user, onNavigate }) => {
+    usePerformanceMonitor('AdminUserForm');
     const { saveUser } = useContent();
     const [formData, setFormData] = useState<User>(user || emptyUser);
     const isNew = !user;
@@ -87,7 +89,7 @@ const AdminUserForm: React.FC<AdminUserFormProps> = ({ user, onNavigate }) => {
                         <h1 className="text-2xl font-bold text-brand-gray-900 border-b pb-4">
                             {isNew ? 'Add New User' : 'Edit User'}
                         </h1>
-                        
+
                         <section>
                             <h3 className="text-lg font-semibold text-brand-gray-800 mb-4">Account Information</h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -101,7 +103,7 @@ const AdminUserForm: React.FC<AdminUserFormProps> = ({ user, onNavigate }) => {
                                 </FormField>
                             </div>
                         </section>
-                        
+
                         <section>
                              <h3 className="text-lg font-semibold text-brand-gray-800 mb-4">Shipping Address</h3>
                              <div className="space-y-4">

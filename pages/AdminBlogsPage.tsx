@@ -1,10 +1,12 @@
 
 import React from 'react';
+import { usePerformanceMonitor } from '../utils/performanceMonitor';
 import { useContent } from '../contexts/ContentContext';
 import Icon from '../components/Icon';
 import { useNavigate } from 'react-router-dom';
 
 const AdminBlogsPage: React.FC = () => {
+  usePerformanceMonitor('AdminBlogsPage');
   const { blogPosts, deleteBlogPost } = useContent();
   const navigate = useNavigate();
 

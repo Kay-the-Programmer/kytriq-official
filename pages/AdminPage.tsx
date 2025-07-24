@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { usePerformanceMonitor } from '../utils/performanceMonitor';
 import { Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import Icon from '../components/Icon';
 import AdminDashboardPage from './AdminDashboardPage';
@@ -10,6 +11,7 @@ import AdminUsersPage from './AdminUsersPage';
 import AdminSoftwarePage from './AdminSoftwarePage';
 
 const AdminPage: React.FC = () => {
+    usePerformanceMonitor('AdminPage');
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const location = useLocation();
 

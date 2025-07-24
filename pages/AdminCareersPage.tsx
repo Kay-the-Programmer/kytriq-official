@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { usePerformanceMonitor } from '../utils/performanceMonitor';
 import { useNavigate } from 'react-router-dom';
 import { useContent } from '../contexts/ContentContext';
 import Icon from '../components/Icon';
 
 const AdminCareersPage: React.FC = () => {
+    usePerformanceMonitor('AdminCareersPage');
     const navigate = useNavigate();
     const { jobOpenings, jobApplications, deleteJobOpening, updateJobApplicationStatus, deleteJobApplication } = useContent();
     const [activeTab, setActiveTab] = useState<'openings' | 'applications'>('openings');

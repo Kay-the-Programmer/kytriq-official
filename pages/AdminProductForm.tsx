@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { usePerformanceMonitor } from '../utils/performanceMonitor';
 import { Product } from '../contexts/ContentContext';
 import { useContent } from '../contexts/ContentContext';
 import { GeminiService } from '../services/api';
@@ -27,6 +28,7 @@ const defaultCategories: Product['category'][] = ['Accessories', 'Apparel', 'Aud
 const stockStatuses: Product['stockStatus'][] = ['In Stock', 'Low Stock', 'Out of Stock'];
 
 const AdminProductForm: React.FC<AdminProductFormProps> = ({ product, onNavigate }) => {
+    usePerformanceMonitor('AdminProductForm');
     const { saveProduct, products } = useContent();
     const [formData, setFormData] = useState<Product>(product || { ...emptyProduct, id: '' });
     const [uploadedImages, setUploadedImages] = useState<string[]>([]);

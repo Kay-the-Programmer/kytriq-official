@@ -1,10 +1,12 @@
 
 import React, { useState, useRef } from 'react';
+import { usePerformanceMonitor } from '../utils/performanceMonitor';
 import { useContent } from '../contexts/ContentContext';
 import Icon from '../components/Icon';
 import Snackbar from '../components/Snackbar';
 
 const AdminProductsPage: React.FC = () => {
+  usePerformanceMonitor('AdminProductsPage');
   const { products, deleteProduct, saveProduct } = useContent();
   const [showProductForm, setShowProductForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);

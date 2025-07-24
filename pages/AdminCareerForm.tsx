@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { usePerformanceMonitor } from '../utils/performanceMonitor';
 import { JobOpening } from '../contexts/ContentContext';
 import { useContent } from '../contexts/ContentContext';
 import { GeminiService } from '../services/api';
@@ -20,6 +21,7 @@ const locations: JobOpening['location'][] = ['Remote', 'San Francisco, CA', 'New
 const types: JobOpening['type'][] = ['Full-time', 'Part-time', 'Contract'];
 
 const AdminCareerForm: React.FC<AdminCareerFormProps> = ({ job, onNavigate }) => {
+    usePerformanceMonitor('AdminCareerForm');
     const { saveJobOpening } = useContent();
     const [formData, setFormData] = useState<JobOpening>(job || emptyJob);
     const [isGenerating, setIsGenerating] = useState(false);

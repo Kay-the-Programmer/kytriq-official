@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { usePerformanceMonitor } from '../utils/performanceMonitor';
 import { useContent } from '../contexts/ContentContext';
 import { Order } from '../data/account';
 import Icon from '../components/Icon';
@@ -54,6 +55,7 @@ const OrderStatusTracker: React.FC<{ status: Order['status'] }> = ({ status }) =
 };
 
 const AdminOrdersPage: React.FC<AdminOrdersPageProps> = ({ onNavigate }) => {
+  usePerformanceMonitor('AdminOrdersPage');
   const { orders, updateOrderStatus } = useContent();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<Order['status'] | 'All'>('All');

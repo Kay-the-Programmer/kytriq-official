@@ -1,4 +1,5 @@
 import React from 'react';
+import { usePerformanceMonitor } from '../utils/performanceMonitor';
 import { useContent } from '../contexts/ContentContext';
 import Icon from '../components/Icon';
 import { Order } from '../data/account';
@@ -61,6 +62,7 @@ const RecentOrdersTable: React.FC<{ orders: Order[] }> = ({ orders }) => {
 };
 
 const AdminDashboardPage: React.FC = () => {
+    usePerformanceMonitor('AdminDashboardPage');
     const { products, orders, blogPosts } = useContent();
 
     const totalRevenue = orders
