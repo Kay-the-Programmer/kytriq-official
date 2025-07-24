@@ -22,7 +22,7 @@ import AccountPage from './pages/AccountPage';
 import SoftwareGetStartedPage from './pages/SoftwareGetStartedPage';
 import SoftwareSetupConfirmationPage from './pages/SoftwareSetupConfirmationPage';
 import ProductDetailPage from './pages/ProductDetailPage';
-import { useOptimizedContentContext, OptimizedContentProvider } from './contexts/OptimizedContentProvider';
+import { useContent } from './contexts/ContentContext';
 import AdminPage from './pages/AdminPage';
 import AdminProductForm from './pages/AdminProductForm';
 import BlogPage from './pages/BlogPage';
@@ -73,29 +73,21 @@ const HomePage: React.FC = () => {
 
 // Protected route component
 const ProtectedRoute: React.FC<{
-    element: React.ReactNode;
+    element: React.ReactNode | ((navigate: any) => React.ReactNode);
     adminOnly?: boolean;
 }> = ({ element, adminOnly = false }) => {
-    const { auth } = useOptimizedContentContext();
-    const { currentUser, isAuthenticating } = auth;
-
-    if (isAuthenticating) {
-        return (
-            <div className="flex items-center justify-center min-h-screen bg-brand-gray-50">
-                <Icon name="kytriq" className="text-techflex-blue text-5xl animate-pulse" />
-            </div>
-        );
-    }
+    const { currentUser } = useContent();
+    const navigate = useNavigate();
 
     if (!currentUser) {
-        return <Navigate to="/login" replace />;
+        return <Navigate to="/login" />;
     }
 
     if (adminOnly && currentUser.role !== 'admin') {
-        return <Navigate to="/unauthorized" replace />;
+        return <Navigate to="/" />;
     }
 
-    return <>{element}</>;
+    return <>{typeof element === 'function' ? element(navigate) : element}</>;
 };
 
 
@@ -103,7 +95,19 @@ const ProtectedRoute: React.FC<{
 // Main App component with React Router
 const App: React.FC = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const { loading, currentUser } = useContent();
   const { notification, closeNotification } = useCart();
+
+  if (loading) {
+    return (
+        <div className="flex items-center justify-center min-h-screen bg-brand-gray-50">
+            <div className="text-center">
+                <Icon name="kytriq" className="text-techflex-blue text-5xl animate-pulse" />
+                <p className="mt-4 text-lg font-semibold text-brand-gray-600">Loading Kytriq...</p>
+            </div>
+        </div>
+    );
+  }
 
   // Create a wrapper for the Header and Footer that can use the useNavigate hook
   const AppLayout: React.FC<{ children: React.ReactNode | ((navigate: any) => React.ReactNode) }> = ({ children }) => {
@@ -133,20 +137,19 @@ const App: React.FC = () => {
   };
 
   return (
-    <OptimizedContentProvider>
-      <Router>
-        <ScrollToTop />
-        <Snackbar
-          message={notification.message}
-          isOpen={notification.isOpen}
-          onClose={closeNotification}
-          type={notification.type}
-          onViewCart={() => setIsCartOpen(true)}
-        />
-        <Routes>
-          <Route path="/" element={<AppLayout><HomePage /></AppLayout>} />
+    <Router>
+      <ScrollToTop />
+      <Snackbar 
+        message={notification.message}
+        isOpen={notification.isOpen}
+        onClose={closeNotification}
+        type={notification.type}
+        onViewCart={() => setIsCartOpen(true)}
+      />
+      <Routes>
+        <Route path="/" element={<AppLayout><HomePage /></AppLayout>} />
 
-          {/* Product routes */}
+        {/* Product routes */}
         <Route path="/products" element={<AppLayout><ProductsPage /></AppLayout>} />
         <Route path="/product/:id" element={<AppLayout><ProductDetailPage /></AppLayout>} />
         <Route path="/productDetail/:id" element={<AppLayout><ProductDetailPage /></AppLayout>} />
@@ -323,8 +326,7 @@ const App: React.FC = () => {
         {/* Fallback route */}
         <Route path="*" element={<AppLayout><HomePage /></AppLayout>} />
       </Routes>
-      </Router>
-    </OptimizedContentProvider>
+    </Router>
   );
 };
 

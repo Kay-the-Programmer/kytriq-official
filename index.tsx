@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { CartProvider } from './contexts/CartContext';
-import { OptimizedContentProvider } from './contexts/OptimizedContentProvider';
+import { ContentProvider } from './contexts/ContentContext';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -12,10 +12,10 @@ if (!rootElement) {
 const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
-    <OptimizedContentProvider>
+    <ContentProvider>
       <CartProvider>
         <App />
       </CartProvider>
-    </OptimizedContentProvider>
+    </ContentProvider>
   </React.StrictMode>
 );
