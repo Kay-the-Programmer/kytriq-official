@@ -1,0 +1,14 @@
+.about-page .value-card,
+.about-page .timeline-item,
+.about-page .team-member-card,
+.about-page .stats-counter {
+    transition: all 0.5s ease-in-out;
+}
+
+.about-page .value-card.visible,
+.about-page .timeline-item.visible,
+.about-page .team-member-card.visible,
+.about-page .stats-counter.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
