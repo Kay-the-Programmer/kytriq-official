@@ -629,7 +629,10 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
         }
 
         const { user } = response;
-        setCurrentUser(user);
+        await new Promise(resolve => {
+            setCurrentUser(user);
+            resolve(user);
+        });
         return { success: true, user };
     } catch (error) {
         console.error('Login failed:', error);
