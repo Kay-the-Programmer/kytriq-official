@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Icon from '../components/Icon';
-import { usePerformanceMonitor } from '../utils/performanceMonitor';
-import './ECommercePage.css';
 
 interface ECommercePageProps {
     onNavigate?: (page: string) => void;
@@ -13,53 +11,76 @@ const FeatureCard: React.FC<{
     children: React.ReactNode;
     index: number;
     isVisible: boolean;
-}> = React.memo(({ iconName, title, children, index, isVisible }) => {
+}> = ({ iconName, title, children, index, isVisible }) => {
+    const [, setIsHovered] = useState(false);
     return (
         <div
             className={`group relative bg-white/80 backdrop-blur-sm rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-700 border border-brand-gray-100/50 h-full transform-gpu ${
                 isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-95'
             }`}
             style={{ transitionDelay: `${index * 150}ms` }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
         >
+            {/* Gradient overlay with subtle animation */}
             <div className="absolute inset-0 bg-gradient-to-br from-techflex-blue-50/30 via-transparent to-techflex-orange-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+            {/* Interactive background pattern */}
             <div className="absolute inset-0 opacity-0 group-hover:opacity-5 transition-all duration-700">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_80%,rgba(20,105,183,0.3)_0%,transparent_50%)]"></div>
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(255,102,0,0.2)_0%,transparent_50%)]"></div>
             </div>
+
             <div className="relative p-8 text-center">
+                {/* Enhanced icon section */}
                 <div className="relative mb-6">
+                    {/* Animated background rings */}
                     <div className="absolute inset-0 flex items-center justify-center">
                         <div className="w-20 h-20 rounded-full bg-gradient-to-r from-techflex-blue-100/50 to-techflex-orange-100/50 opacity-0 group-hover:opacity-100 animate-ping transition-opacity duration-500"></div>
                         <div className="absolute w-24 h-24 rounded-full border border-techflex-blue-200/30 opacity-0 group-hover:opacity-100 transition-all duration-700 animate-pulse"></div>
                     </div>
+
+                    {/* Main icon container */}
                     <div className="relative w-16 h-16 mx-auto bg-gradient-to-br from-techflex-orange-100 to-techflex-orange-200 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:rotate-3 group-hover:scale-110 shadow-lg group-hover:shadow-xl">
                         <div className="absolute inset-0 rounded-2xl bg-white/25 backdrop-blur-sm border border-white/20"></div>
                         <Icon name={iconName} className="h-8 w-8 text-techflex-orange relative z-10 transition-transform duration-300 group-hover:scale-110" />
+
+                        {/* Shine effect */}
                         <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform -skew-x-12 translate-x-full group-hover:translate-x-full group-hover:animate-pulse"></div>
                     </div>
                 </div>
+
                 <h3 className="text-xl font-bold text-brand-gray-900 group-hover:text-techflex-blue transition-colors duration-300 mb-3">{title}</h3>
                 <p className="text-brand-gray-600 leading-relaxed text-sm group-hover:text-brand-gray-700 transition-colors duration-300">{children}</p>
+
+                {/* Subtle bottom accent line */}
                 <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-techflex-blue to-techflex-orange group-hover:w-16 transition-all duration-500 rounded-full"></div>
             </div>
         </div>
     );
-});
+};
 
 const PlatformCard: React.FC<{
     title: string;
     children: React.ReactNode;
     index: number;
     isVisible: boolean;
-}> = React.memo(({ title, children, index, isVisible }) => {
+}> = ({ title, children, index, isVisible }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
     return (
         <div
             className={`group relative bg-gradient-to-br from-techflex-orange-50/80 to-white/80 backdrop-blur-sm rounded-3xl border-2 border-techflex-orange-100/50 h-full overflow-hidden shadow-lg hover:shadow-xl transition-all duration-700 transform-gpu ${
                 isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-95'
             }`}
             style={{ transitionDelay: `${index * 100}ms` }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
         >
+            {/* Hover gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-br from-techflex-orange-100/40 via-transparent to-techflex-orange-200/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+            {/* Floating particles effect */}
             <div className="absolute inset-0 overflow-hidden">
                 {[...Array(4)].map((_, i) => (
                     <div
@@ -69,13 +90,17 @@ const PlatformCard: React.FC<{
                             top: `${20 + i * 20}%`,
                             right: `${10 + i * 15}%`,
                             animationDelay: `${i * 300}ms`,
+                            transform: isHovered ? `translateY(-${i * 3}px) scale(1.5)` : 'translateY(0) scale(1)',
                         }}
                     />
                 ))}
             </div>
+
             <div className="relative p-8">
                 <h3 className="text-xl font-bold text-techflex-orange group-hover:text-techflex-orange-600 transition-colors duration-300 mb-3">{title}</h3>
                 <p className="text-brand-gray-600 leading-relaxed text-sm group-hover:text-brand-gray-700 transition-colors duration-300">{children}</p>
+
+                {/* Interactive arrow */}
                 <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
                     <div className="w-8 h-8 bg-techflex-orange-200 rounded-full flex items-center justify-center">
                         <Icon name="arrow-right" className="w-4 h-4 text-techflex-orange" />
@@ -84,14 +109,14 @@ const PlatformCard: React.FC<{
             </div>
         </div>
     );
-});
+};
 
 const StatCard: React.FC<{
     number: string;
     label: string;
     index: number;
     isVisible: boolean;
-}> = React.memo(({ number, label, index, isVisible }) => (
+}> = ({ number, label, index, isVisible }) => (
     <div
         className={`text-center transform-gpu transition-all duration-700 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
@@ -103,10 +128,9 @@ const StatCard: React.FC<{
         </div>
         <div className="text-brand-gray-600 text-sm font-medium">{label}</div>
     </div>
-));
+);
 
 const ECommercePage: React.FC<ECommercePageProps> = ({ }) => {
-    usePerformanceMonitor('ECommercePage');
     const [featuresVisible, setFeaturesVisible] = useState(false);
     const [platformsVisible, setPlatformsVisible] = useState(false);
     const [statsVisible, setStatsVisible] = useState(false);
@@ -119,23 +143,7 @@ const ECommercePage: React.FC<ECommercePageProps> = ({ }) => {
     const statsRef = useRef<HTMLDivElement>(null);
     const heroRef = useRef<HTMLDivElement>(null);
 
-    const handleMouseMove = useCallback((e: MouseEvent) => {
-        if (heroRef.current) {
-            const rect = heroRef.current.getBoundingClientRect();
-            setMousePosition({
-                x: (e.clientX - rect.left - rect.width / 2) / rect.width,
-                y: (e.clientY - rect.top - rect.height / 2) / rect.height,
-            });
-        }
-    }, []);
-
-    const handleScroll = useCallback(() => {
-        const scrolled = window.scrollY;
-        const maxHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = (scrolled / maxHeight) * 100;
-        setScrollProgress(progress);
-    }, []);
-
+    // Intersection Observer for scroll animations
     useEffect(() => {
         const observers = [
             { ref: featuresRef, setState: setFeaturesVisible },
@@ -148,7 +156,6 @@ const ECommercePage: React.FC<ECommercePageProps> = ({ }) => {
                 ([entry]) => {
                     if (entry.isIntersecting) {
                         setState(true);
-                        observer.disconnect();
                     }
                 },
                 { threshold: 0.1, rootMargin: '50px' }
@@ -161,22 +168,31 @@ const ECommercePage: React.FC<ECommercePageProps> = ({ }) => {
             return observer;
         });
 
+        return () => {
+            observerInstances.forEach(observer => observer.disconnect());
+        };
+    }, []);
+
+    // Mouse tracking for hero section
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            if (heroRef.current) {
+                const rect = heroRef.current.getBoundingClientRect();
+                setMousePosition({
+                    x: (e.clientX - rect.left - rect.width / 2) / rect.width,
+                    y: (e.clientY - rect.top - rect.height / 2) / rect.height,
+                });
+            }
+        };
+
         const hero = heroRef.current;
         if (hero) {
             hero.addEventListener('mousemove', handleMouseMove);
+            return () => hero.removeEventListener('mousemove', handleMouseMove);
         }
+    }, []);
 
-        window.addEventListener('scroll', handleScroll);
-
-        return () => {
-            observerInstances.forEach(observer => observer.disconnect());
-            if (hero) {
-                hero.removeEventListener('mousemove', handleMouseMove);
-            }
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, [handleMouseMove, handleScroll]);
-
+    // Auto-rotate features
     useEffect(() => {
         const interval = setInterval(() => {
             setActiveFeature((prev) => (prev + 1) % features.length);
@@ -184,41 +200,57 @@ const ECommercePage: React.FC<ECommercePageProps> = ({ }) => {
         return () => clearInterval(interval);
     }, []);
 
-    const features = useMemo(() => [
+    // Track scroll progress
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrolled = window.scrollY;
+            const maxHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrolled / maxHeight) * 100;
+            setScrollProgress(progress);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const features = [
         { icon: 'swatch', title: 'Custom Storefront Design', description: 'Beautiful, responsive, and brand-aligned designs that create unforgettable shopping experiences and drive conversions.' },
         { icon: 'shopping-cart', title: 'Seamless Shopping Cart', description: 'An intuitive and secure checkout process designed to minimize friction and reduce cart abandonment rates.' },
         { icon: 'credit-card', title: 'Integrated Payment Gateways', description: 'Accept payments from all major providers, including Stripe, PayPal, and more, with robust security.' },
         { icon: 'cube', title: 'Product & Inventory Sync', description: 'Easily manage products, track stock levels across multiple channels, and handle complex product variants.' },
         { icon: 'chart-bar', title: 'Sales & Customer Analytics', description: 'Gain valuable insights into your store\'s performance, customer behavior, and marketing effectiveness.' },
         { icon: 'device-phone-mobile', title: 'Mobile-First Commerce', description: 'A flawless shopping experience on any device, ensuring your store looks and works perfectly on smartphones and tablets.' },
-    ], []);
+    ];
 
-    const platforms = useMemo(() => [
+    const platforms = [
         { title: 'Shopify', description: 'Rapidly launch a powerful, scalable online store with the world\'s most popular e-commerce platform.' },
         { title: 'WooCommerce', description: 'Leverage the flexibility of WordPress to create a highly customizable and content-rich shopping experience.' },
         { title: 'Magento (Adobe Commerce)', description: 'For large-scale operations requiring enterprise-level features, security, and scalability.' },
         { title: 'Custom Solutions', description: 'A completely bespoke e-commerce platform built from the ground up to meet your unique business requirements.' },
-    ], []);
+    ];
 
-    const stats = useMemo(() => [
+    const stats = [
         { number: '500+', label: 'Online Stores Built' },
         { number: '99.9%', label: 'Uptime Guarantee' },
         { number: '24/7', label: 'Support Available' },
         { number: '48hrs', label: 'Average Setup Time' },
-    ], []);
+    ];
 
     return (
-        <div className="ecommerce-page bg-gradient-to-br from-brand-gray-50 via-white to-techflex-blue-50/30 min-h-screen">
+        <div className="bg-gradient-to-br from-brand-gray-50 via-white to-techflex-blue-50/30 min-h-screen">
+            {/* Scroll Progress Indicator */}
             <div className="fixed top-0 left-0 w-full h-1 bg-brand-gray-200 z-50">
                 <div
                     className="h-full bg-gradient-to-r from-techflex-orange to-techflex-blue transition-all duration-300"
                     style={{ width: `${scrollProgress}%` }}
                 />
             </div>
+            {/* Enhanced Hero Section */}
             <div
                 ref={heroRef}
                 className="relative bg-gradient-to-br from-white via-white to-brand-gray-50/50 shadow-sm text-brand-gray-900 py-16 sm:py-24 lg:py-32 overflow-hidden"
             >
+                {/* Animated background elements */}
                 <div className="absolute inset-0 overflow-hidden">
                     <div
                         className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-techflex-blue-200/20 to-techflex-orange-200/20 rounded-full blur-3xl animate-pulse"
@@ -235,12 +267,15 @@ const ECommercePage: React.FC<ECommercePageProps> = ({ }) => {
                         }}
                     />
                 </div>
+
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
                     <div className="max-w-4xl mx-auto">
+                        {/* Animated badge */}
                         <div className="inline-flex items-center gap-2 bg-gradient-to-r from-techflex-blue-100 to-techflex-orange-100 text-techflex-blue-800 text-sm font-semibold px-4 py-2 rounded-full mb-6 shadow-sm animate-fade-in-up">
                             <div className="w-2 h-2 bg-techflex-orange rounded-full animate-pulse"></div>
                             E-Commerce Excellence
                         </div>
+
                         <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight text-brand-gray-900 mb-6 animate-fade-in-up">
                             Powerful{' '}
                             <span className="bg-gradient-to-r from-techflex-blue to-techflex-orange bg-clip-text text-transparent">
@@ -248,9 +283,12 @@ const ECommercePage: React.FC<ECommercePageProps> = ({ }) => {
                             </span>
                             {' '}Solutions
                         </h1>
+
                         <p className="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-brand-gray-600 leading-relaxed animate-fade-in-up" style={{ animationDelay: '200ms' }}>
                             We build high-converting online stores that turn visitors into loyal customers with cutting-edge technology and beautiful design.
                         </p>
+
+                        {/* Enhanced CTA with stats */}
                         <div
                             className="mt-10 animate-fade-in-up"
                             style={{ animationDelay: '400ms' }}
@@ -266,6 +304,7 @@ const ECommercePage: React.FC<ECommercePageProps> = ({ }) => {
                                     </span>
                                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                 </button>
+
                                 <button
                                     onClick={() => window.location.href = '#features'}
                                     className="group text-brand-gray-700 hover:text-techflex-blue font-semibold py-4 px-8 rounded-2xl transition-all duration-300 border-2 border-brand-gray-200 hover:border-techflex-blue-300 bg-white/80 backdrop-blur-sm hover:bg-white"
@@ -276,6 +315,8 @@ const ECommercePage: React.FC<ECommercePageProps> = ({ }) => {
                                     </span>
                                 </button>
                             </div>
+
+                            {/* Stats row */}
                             <div
                                 ref={statsRef}
                                 className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-2xl mx-auto pt-8 border-t border-brand-gray-200/50"
@@ -294,6 +335,8 @@ const ECommercePage: React.FC<ECommercePageProps> = ({ }) => {
                     </div>
                 </div>
             </div>
+
+            {/* Enhanced Features Section */}
             <section id="features" className="py-20 sm:py-28" ref={featuresRef}>
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
@@ -306,6 +349,8 @@ const ECommercePage: React.FC<ECommercePageProps> = ({ }) => {
                         <p className="mt-4 max-w-2xl mx-auto text-lg text-brand-gray-600 leading-relaxed">
                             Our comprehensive e-commerce solutions are packed with powerful features designed to help your business thrive in the digital marketplace.
                         </p>
+
+                        {/* Feature highlights slider */}
                         <div className="mt-8 flex justify-center">
                             <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full p-2 shadow-lg border border-brand-gray-200">
                                 {features.map((_, index) => (
@@ -322,6 +367,7 @@ const ECommercePage: React.FC<ECommercePageProps> = ({ }) => {
                             </div>
                         </div>
                     </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {features.map((item, index) => (
                             <FeatureCard
@@ -337,6 +383,8 @@ const ECommercePage: React.FC<ECommercePageProps> = ({ }) => {
                     </div>
                 </div>
             </section>
+
+            {/* Enhanced Platforms Section */}
             <section className="bg-gradient-to-br from-brand-gray-100/50 to-techflex-blue-50/30 py-20 sm:py-28" ref={platformsRef}>
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
@@ -350,6 +398,7 @@ const ECommercePage: React.FC<ECommercePageProps> = ({ }) => {
                             We work with the industry's best platforms to find the perfect technological foundation for your unique business needs.
                         </p>
                     </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {platforms.map((item, index) => (
                             <PlatformCard
@@ -364,6 +413,8 @@ const ECommercePage: React.FC<ECommercePageProps> = ({ }) => {
                     </div>
                 </div>
             </section>
+
+            {/* Enhanced CTA Section */}
             <section id="contact" className="bg-gradient-to-br from-white to-brand-gray-50 shadow-inner">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
                     <div className="max-w-4xl mx-auto text-center">
@@ -371,15 +422,18 @@ const ECommercePage: React.FC<ECommercePageProps> = ({ }) => {
                             <Icon name="rocket-launch" className="w-4 h-4" />
                             Ready to Launch?
                         </div>
+
                         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-brand-gray-900 mb-6">
                             Ready to Start{' '}
                             <span className="bg-gradient-to-r from-techflex-blue to-techflex-orange bg-clip-text text-transparent">
                                 Selling?
                             </span>
                         </h2>
+
                         <p className="mt-4 max-w-2xl mx-auto text-lg text-brand-gray-600 leading-relaxed mb-10">
                             Let's discuss your vision and create something amazing together. We offer a free, comprehensive consultation to plan your e-commerce journey.
                         </p>
+
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                             <button className="group relative bg-gradient-to-r from-techflex-orange to-techflex-orange-600 hover:from-techflex-orange-600 hover:to-techflex-orange-700 text-white font-bold py-4 px-8 rounded-2xl text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
                                 <span className="relative z-10 flex items-center gap-2">
@@ -388,6 +442,7 @@ const ECommercePage: React.FC<ECommercePageProps> = ({ }) => {
                                 </span>
                                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             </button>
+
                             <button className="group text-brand-gray-700 hover:text-techflex-blue font-semibold py-4 px-8 rounded-2xl transition-all duration-300 border-2 border-brand-gray-200 hover:border-techflex-blue-300 bg-white/80 backdrop-blur-sm hover:bg-white">
                                 <span className="flex items-center gap-2">
                                     <Icon name="phone" className="w-5 h-5" />
@@ -395,6 +450,8 @@ const ECommercePage: React.FC<ECommercePageProps> = ({ }) => {
                                 </span>
                             </button>
                         </div>
+
+                        {/* Trust indicators */}
                         <div className="mt-12 pt-8 border-t border-brand-gray-200">
                             <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-brand-gray-500">
                                 <div className="flex items-center gap-2">
@@ -418,4 +475,4 @@ const ECommercePage: React.FC<ECommercePageProps> = ({ }) => {
     );
 };
 
-export default React.memo(ECommercePage);
+export default ECommercePage;
