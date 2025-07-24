@@ -1,0 +1,24 @@
+.ecommerce-page .feature-card,
+.ecommerce-page .platform-card,
+.ecommerce-page .stat-card {
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.ecommerce-page .feature-card.visible,
+.ecommerce-page .platform-card.visible,
+.ecommerce-page .stat-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.ecommerce-page .feature-card {
+    transition-delay: calc(var(--index) * 100ms);
+}
+
+.ecommerce-page .platform-card {
+    transition-delay: calc(var(--index) * 100ms);
+}
+
+.ecommerce-page .stat-card {
+    transition-delay: calc(var(--index) * 100ms);
+}

@@ -1,0 +1,9 @@
+.contact-page .contact-info-item,
+.contact-page .form-input {
+    transition: all 0.3s ease-in-out;
+}
+
+.contact-page .contact-info-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}

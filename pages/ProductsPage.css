@@ -1,0 +1,14 @@
+.products-page-grid-list {
+    transition: grid-template-columns 0.3s ease-in-out;
+}
+
+.product-card-enter {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.product-card-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 300ms, transform 300ms;
+}
