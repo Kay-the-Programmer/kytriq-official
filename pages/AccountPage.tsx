@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { usePerformanceMonitor } from '../utils/performanceMonitor';
 import { Order, User } from '../contexts/ContentContext';
 import Icon from '../components/Icon';
 import { useContent } from '../contexts/ContentContext';
@@ -88,7 +89,7 @@ const ProfileSettings: React.FC = () => {
             return { ...prevUser, [name]: value };
         });
     };
-    
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (user) {
@@ -146,6 +147,7 @@ const ProfileSettings: React.FC = () => {
 }
 
 const AccountPage: React.FC<AccountPageProps> = ({ onNavigate }) => {
+    usePerformanceMonitor('AccountPage');
     const [activeTab, setActiveTab] = useState('orders');
     const { currentUser, orders } = useContent();
 
@@ -170,7 +172,7 @@ const AccountPage: React.FC<AccountPageProps> = ({ onNavigate }) => {
                 <div className="max-w-5xl mx-auto">
                     <h1 className="text-4xl md:text-5xl font-extrabold text-brand-gray-900 tracking-tight mb-2">My Account</h1>
                     <p className="text-lg text-brand-gray-600 mb-8">Welcome back, {currentUser?.fullName}!</p>
-                    
+
                     <div className="flex flex-wrap gap-4 mb-8 border-b border-brand-gray-200 pb-4">
                        <TabButton tabName="orders">Order History</TabButton>
                        <TabButton tabName="profile">Profile Settings</TabButton>

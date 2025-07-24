@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { usePerformanceMonitor } from '../utils/performanceMonitor';
 import { BlogPost } from '../contexts/ContentContext';
 import { useContent } from '../contexts/ContentContext';
 import { GeminiService } from '../services/api';
@@ -17,6 +18,7 @@ const emptyPost: BlogPost = {
 };
 
 const AdminBlogForm: React.FC<AdminBlogFormProps> = ({ post, onNavigate }) => {
+    usePerformanceMonitor('AdminBlogForm');
     const { saveBlogPost } = useContent();
     const [formData, setFormData] = useState<BlogPost>(post || emptyPost);
     const [isGenerating, setIsGenerating] = useState(false);

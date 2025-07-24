@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { usePerformanceMonitor } from '../utils/performanceMonitor';
 import Icon from '../components/Icon';
 
 interface AboutPageProps {
@@ -560,6 +561,7 @@ const StatsCounter: React.FC<{
 };
 
 const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
+    usePerformanceMonitor('AboutPage');
     const [scrollProgress, setScrollProgress] = useState(0);
     const [activeSection, setActiveSection] = useState('hero');
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });

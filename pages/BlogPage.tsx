@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { usePerformanceMonitor } from '../utils/performanceMonitor';
 import BlogPostCard from '../components/BlogPostCard';
 import { BlogService, BlogPost } from '../services/api';
 
@@ -8,6 +9,7 @@ interface BlogPageProps {
 }
 
 const BlogPage: React.FC<BlogPageProps> = ({ onNavigate }) => {
+    usePerformanceMonitor('BlogPage');
     const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
     const [, setLoading] = useState<boolean>(true);
     const [, setError] = useState<string | null>(null);

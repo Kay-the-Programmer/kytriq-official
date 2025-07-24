@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { usePerformanceMonitor } from '../utils/performanceMonitor';
 import Icon from '../components/Icon';
 
 interface ElectronicsPageProps {
@@ -157,6 +158,7 @@ const ProcessStep: React.FC<{
 };
 
 const ElectronicsPage: React.FC<ElectronicsPageProps> = ({ onNavigate }) => {
+    usePerformanceMonitor('ElectronicsPage');
     const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
     const [scrollProgress, setScrollProgress] = useState(0);
     const [activeTestimonial, setActiveTestimonial] = useState(0);
