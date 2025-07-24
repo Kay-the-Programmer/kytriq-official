@@ -39,6 +39,7 @@ import CareerApplicationConfirmationPage from './pages/CareerApplicationConfirma
 import ContactPage from './pages/ContactPage';
 import ContactConfirmationPage from './pages/ContactConfirmationPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import SearchPage from './pages/SearchPage';
 import TermsOfServicePage from './pages/TermsOfServicePage';
 import CookiePolicyPage from './pages/CookiePolicyPage';
 import OrderDetailPage from './pages/OrderDetailPage';
@@ -48,6 +49,12 @@ import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import Icon from './components/Icon';
 import AdminSoftwareForm from './pages/AdminSoftwareForm';
+import HelpPage from './pages/HelpPage';
+import DocumentationPage from './pages/DocumentationPage';
+import ApiReferencePage from './pages/ApiReferencePage';
+import StatusPage from './pages/StatusPage';
+import SecurityPage from './pages/SecurityPage';
+import UnauthorizedPage from './pages/UnauthorizedPage';
 
 const HomePage: React.FC = () => {
     const navigate = useNavigate();
@@ -615,6 +622,8 @@ const App: React.FC = () => {
         <Route path="/privacy" element={<AppLayout><PrivacyPolicyPage /></AppLayout>} />
         <Route path="/terms-of-service" element={<AppLayout><TermsOfServicePage /></AppLayout>} />
         <Route path="/cookie-policy" element={<AppLayout><CookiePolicyPage /></AppLayout>} />
+        <Route path="/security" element={<AppLayout><SecurityPage /></AppLayout>} />
+        <Route path="/search" element={<AppLayout><SearchPage /></AppLayout>} />
 
         {/* Admin routes */}
         <Route 
@@ -677,6 +686,25 @@ const App: React.FC = () => {
         {/* Auth routes */}
         <Route path="/login" element={<AppLayout><LoginPageWrapper /></AppLayout>} />
         <Route path="/signup" element={<AppLayout><SignUpPageWrapper /></AppLayout>} />
+
+        {/* Support routes */}
+        <Route path="/help" element={<AppLayout>{(navigate) => <HelpPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
+        <Route path="/docs" element={<AppLayout>{(navigate) => <DocumentationPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
+        <Route 
+          path="/api" 
+          element={
+            <AppLayout>
+              <ProtectedRoute 
+                element={(navigate) => <ApiReferencePage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />} 
+                adminOnly={true} 
+              />
+            </AppLayout>
+          } 
+        />
+        <Route path="/status" element={<AppLayout>{(navigate) => <StatusPage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
+
+        {/* Access control */}
+        <Route path="/unauthorized" element={<AppLayout><UnauthorizedPage /></AppLayout>} />
 
         {/* Fallback route */}
         <Route path="*" element={<AppLayout><HomePage /></AppLayout>} />

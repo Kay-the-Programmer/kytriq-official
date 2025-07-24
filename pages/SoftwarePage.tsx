@@ -5,6 +5,7 @@ import SoftwareCard from '../components/SoftwareCard';
 import { usePerformanceMonitor } from '../utils/performanceMonitor';
 
 // Import CSS file instead of using dynamic style injection
+// @ts-ignore
 import '../pages/SoftwarePage.css'
 // Lazy load heavy components
 const FAQSection = lazy(() => import('../components/FAQSection'));
