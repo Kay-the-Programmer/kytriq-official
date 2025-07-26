@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 
+export type SnackbarType = 'success' | 'error' | 'info';
+
 interface SnackbarProps {
   message: string;
   isOpen: boolean;
   onClose: () => void;
   duration?: number;
-  type?: 'success' | 'error' | 'info';
+  type?: SnackbarType;
   onViewCart?: () => void;
 }
 

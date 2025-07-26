@@ -226,7 +226,7 @@ const SoftwarePage: React.FC<SoftwarePageProps> = ({ onNavigate }) => {
                                         href="#" 
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            onNavigate('softwareDetail', 'snapcart');
+                                            onNavigate('software', 'snapcart');
                                         }}
                                         className="group inline-flex items-center px-6 py-3 rounded-xl bg-gradient-to-r from-techflex-blue to-techflex-blue-600 text-white font-medium hover:from-techflex-blue-600 hover:to-techflex-blue-700 transition-all duration-300 self-start shadow-md hover:shadow-lg transform hover:scale-105 active:scale-95">
                                         Learn about SnapCart
@@ -298,7 +298,7 @@ const SoftwarePage: React.FC<SoftwarePageProps> = ({ onNavigate }) => {
                                             href="#"
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                onNavigate('softwareDetail', 'swiftflex');
+                                                onNavigate('software', 'swiftflex');
                                             }}
                                             className="group inline-flex items-center text-techflex-orange font-medium hover:text-techflex-orange-600 transition-colors duration-300"
                                         >
@@ -369,7 +369,7 @@ const SoftwarePage: React.FC<SoftwarePageProps> = ({ onNavigate }) => {
                                             href="#"
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                onNavigate('softwareDetail', 'datasync');
+                                                onNavigate('software', 'datasync');
                                             }}
                                             className="group inline-flex items-center text-techflex-blue font-medium hover:text-techflex-blue-600 transition-colors duration-300"
                                         >

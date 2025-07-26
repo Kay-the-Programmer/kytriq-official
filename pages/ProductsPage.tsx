@@ -88,7 +88,7 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ onNavigate }) => {
             </div>
 
             {/* Ultra Compact Sticky Filter Bar */}
-            <div className={`sticky ${isHeaderVisible ? 'top-16' : 'top-0'} bg-white/95 backdrop-blur-sm z-40 border-b border-brand-gray-100 transition-all duration-300`}>
+            <div className={`sticky ${isHeaderVisible ? 'top-[var(--header-height,64px)]' : 'top-0'} bg-white/95 backdrop-blur-sm z-40 border-b border-brand-gray-100 transition-all duration-300`}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
                     {/* Main Filter Row - Always Visible */}

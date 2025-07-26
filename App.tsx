@@ -98,6 +98,7 @@ const App: React.FC = () => {
   const { loading, currentUser } = useContent();
   const { notification, closeNotification } = useCart();
 
+
   if (loading) {
     return (
         <div className="flex items-center justify-center min-h-screen bg-brand-gray-50">
@@ -155,7 +156,7 @@ const App: React.FC = () => {
         <Route path="/productDetail/:id" element={<AppLayout><ProductDetailPage /></AppLayout>} />
 
         {/* Software routes */}
-        <Route path="/software" element={<AppLayout><SoftwarePage /></AppLayout>} />
+        <Route path="/software" element={<AppLayout>{(navigate) => <SoftwarePage onNavigate={(page, id) => navigate(id ? `/${page}/${id}` : `/${page}`)} />}</AppLayout>} />
         <Route path="/software/:id" element={<AppLayout><SoftwareDetailPage /></AppLayout>} />
         <Route path="/softwareDetail/:id" element={<AppLayout><SoftwareDetailPage /></AppLayout>} />
         <Route 

@@ -12,8 +12,8 @@ const LoginPage: React.FC = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [fieldErrors, setFieldErrors] = useState<{ email?: boolean; password?: boolean }>({});
-    const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; type: SnackbarType }>({
-        open: false,
+    const [snackbar, setSnackbar] = useState<{ isOpen: boolean; message: string; type: SnackbarType }>({
+        isOpen: false,
         message: '',
         type: 'info'
     });
@@ -27,7 +27,7 @@ const LoginPage: React.FC = () => {
 
         if (result.success) {
             setSnackbar({
-                open: true,
+                isOpen: true,
                 message: result.user && result.user.role === 'admin' 
                     ? 'Login successful! Redirecting to admin dashboard...' 
                     : 'Login successful! Redirecting to your account...',
@@ -47,7 +47,7 @@ const LoginPage: React.FC = () => {
         } else if (result.error) {
             setError(result.error.message);
             setSnackbar({
-                open: true,
+                isOpen: true,
                 message: result.error.message,
                 type: 'error'
             });
@@ -62,7 +62,7 @@ const LoginPage: React.FC = () => {
             const errorMsg = 'An error occurred during login. Please try again.';
             setError(errorMsg);
             setSnackbar({
-                open: true,
+                isOpen: true,
                 message: errorMsg,
                 type: 'error'
             });
@@ -87,10 +87,10 @@ const LoginPage: React.FC = () => {
                     </p>
                 </div>
                 <Snackbar
-                    open={snackbar.open}
+                    isOpen={snackbar.isOpen}
                     message={snackbar.message}
                     type={snackbar.type}
-                    onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}
+                    onClose={() => setSnackbar(prev => ({ ...prev, isOpen: false }))}
                 />
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
                     <div className="rounded-md shadow-sm -space-y-px">

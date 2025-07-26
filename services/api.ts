@@ -3,6 +3,37 @@ import axios from 'axios';
 // Define the base URL for API requests
 const API_BASE_URL = 'http://localhost:3001/api';
 
+// Add an interceptor to include the auth token in all requests
+axios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+      console.log(`Adding auth token to request: ${config.url}`);
+    } else {
+      console.warn(`No auth token found for request: ${config.url}`);
+    }
+    return config;
+  },
+  (error) => {
+    console.error('Request interceptor error:', error);
+    return Promise.reject(error);
+  }
+);
+
+// Add a response interceptor to log unauthorized errors
+axios.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      console.error('Unauthorized error:', error.config.url, error);
+    }
+    return Promise.reject(error);
+  }
+);
+
 // Custom API error class
 export class ApiError extends Error {
   status: number;

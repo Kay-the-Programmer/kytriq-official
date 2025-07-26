@@ -103,7 +103,7 @@ const CallToAction: React.FC<CallToActionProps> = ({ onNavigate }) => {
             description: "Smart sales and inventory tracking — scan, sell, and simplify retail from your phone.",
             image: "/images/snapcart-img.jpg",
             action: "Get Started",
-            onClick: () => onNavigate('softwareDetail', 'sw_006'),
+            onClick: () => onNavigate('software', 'sw_006'),
             gradient: "from-techflex-blue-500 to-techflex-blue-700",
             iconBg: "bg-techflex-blue-100",
             iconColor: "text-techflex-blue-600",
