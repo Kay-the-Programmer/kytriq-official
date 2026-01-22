@@ -34,6 +34,8 @@ const SoftwareCard: React.FC<SoftwareCardProps> = ({ software, onNavigate }) => 
                     src={software.imageUrl || "/images/software-placeholder.png"}
                     alt={software.name}
                     className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                    loading="lazy"
+                    decoding="async"
                 />
 
                 {/* Category badge */}

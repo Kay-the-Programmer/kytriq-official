@@ -159,6 +159,8 @@ const ExploreCard: React.FC<ExploreCardProps> = ({
                             className={`w-full h-full object-cover group-hover:scale-110 transition-all duration-700 ${
                                 imageLoaded ? 'opacity-100' : 'opacity-0'
                             }`}
+                            loading="lazy"
+                            decoding="async"
                         />
 
                         {/* Overlay with interactive elements */}
