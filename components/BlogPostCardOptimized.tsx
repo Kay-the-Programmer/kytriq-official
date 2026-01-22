@@ -36,6 +36,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({ post, onNavigate, isFeature
                         alt={post.title} 
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         loading="lazy" // Add lazy loading for images
+                        decoding="async"
                     />
                 </div>
                 <div>
@@ -52,6 +53,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({ post, onNavigate, isFeature
                             alt={post.author} 
                             className="w-12 h-12 rounded-full"
                             loading="lazy"
+                            decoding="async"
                         />
                         <div>
                             <p className="font-semibold text-brand-gray-800">{post.author}</p>
@@ -74,6 +76,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({ post, onNavigate, isFeature
                     alt={post.title} 
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
+                    decoding="async"
                 />
             </div>
             <div className="p-6 flex-grow flex flex-col">
@@ -90,6 +93,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({ post, onNavigate, isFeature
                         alt={post.author} 
                         className="w-10 h-10 rounded-full"
                         loading="lazy"
+                        decoding="async"
                     />
                     <div>
                         <p className="text-sm font-semibold text-brand-gray-800">{post.author}</p>

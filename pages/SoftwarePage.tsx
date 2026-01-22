@@ -252,6 +252,8 @@ const SoftwarePage: React.FC<SoftwarePageProps> = ({ onNavigate }) => {
                                             src="/images/swift-flex.png"
                                             alt="SwiftFlex"
                                             className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                                            loading="lazy"
+                                            decoding="async"
                                         />
 
                                         {/* Category badge */}
@@ -323,6 +325,8 @@ const SoftwarePage: React.FC<SoftwarePageProps> = ({ onNavigate }) => {
                                             src="/images/software.png"
                                             alt="DataSync"
                                             className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                                            loading="lazy"
+                                            decoding="async"
                                         />
 
                                         {/* Category badge */}

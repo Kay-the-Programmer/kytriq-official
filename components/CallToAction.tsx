@@ -272,6 +272,7 @@ const CallToAction: React.FC<CallToActionProps> = ({ onNavigate }) => {
                                         !isMobile ? 'group-hover:scale-110' : ''
                                     }`}
                                     loading="lazy" // Add lazy loading for performance
+                                    decoding="async"
                                 />
 
                                 <div className={`absolute bottom-2 sm:bottom-3 md:bottom-4 right-2 sm:right-3 md:right-4 z-20 transform transition-all duration-300 ${
@@ -349,6 +350,7 @@ const CallToAction: React.FC<CallToActionProps> = ({ onNavigate }) => {
                                     !isMobile ? 'group-hover/image:scale-105' : ''
                                 }`}
                                 loading="lazy"
+                                decoding="async"
                             />
 
                             {/* Stats */}

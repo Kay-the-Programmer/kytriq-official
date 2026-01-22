@@ -101,6 +101,8 @@ const BusinessCard: React.FC<BusinessCardProps> = ({
                         className={`w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 rounded-2xl ${
                             imageLoaded ? 'opacity-100' : 'opacity-0'
                         }`}
+                        loading="lazy"
+                        decoding="async"
                     />
 
                     {/* Overlay with expand button */}
